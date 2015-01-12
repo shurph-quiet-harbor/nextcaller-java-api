@@ -22,25 +22,37 @@ public class MakeHttpRequest {
     public static final String GET_METHOD = "GET";
     public static final String POST_METHOD = "POST";
 
-    private static final int HTTP_STATUS_SERVER_ERROR = 500;
-    private static final int HTTP_STATUS_BAD_REQUEST = 400;
-    private static final int HTTP_STATUS_UNAUTHORIZED = 401;
-    private static final int HTTP_STATUS_NO_CONTENT = 204;
+    private static final String ERROR_MESSAGE_RESPONSE_OBJECT = "error_message";
+
+    private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
+    private static final String USER_AGENT_HEADER_NAME = "User-Agent";
+    private static final String CONNECTION_HEADER_NAME = "Connection";
+    private static final String CONNECTION_HEADER_VALUE = "Keep-Alive";
+    private static final String CONTENT_TYPE_HEADER_NAME = "Content-Type";
+    private static final String CONTENT_TYPE_APPLICATION_JSON = "application/json";
+    private static final String CONTENT_LENGTH_HEADER_NAME = "Content-Length";
+    
+    private static final int DEFAULT_REQUEST_TIMEOUT = 60000; // 60 second
+
+    private static final String MESSAGE_ENCODING = "UTF-8";
+
+    private static final String UPDATE_RESPONSE_VALUE = "true";
+
+    public static final String JSON_FORMAT = "json";
 
     /**
-     * @param auth        http header for Basic authentication
-     * @param url         to send the request
-     * @param data        the data sended by url
-     * @param method      the HTTP method
-     * @param userAgent   the name of the source of the request
-     * @param contentType - internet media type. Can be set to "GET" and "POST"
-     * @param debug
+     * @param auth      http header for Basic authentication
+     * @param url       to send the request
+     * @param data      the data sended by url
+     * @param method    the HTTP method
+     * @param userAgent the name of the source of the request
+     * @param debug     boolean (default false)
      * @return response
      * @throws AuthenticationException
      * @throws HttpException
      */
     public String makeRequest(BasicAuth auth, String url, String data, String method, String userAgent,
-                              String contentType, boolean debug) throws AuthenticationException, HttpException {
+                              boolean debug) throws AuthenticationException, HttpException {
 
         URL connectionUrl;
         HttpsURLConnection connection = null;
@@ -51,43 +63,58 @@ public class MakeHttpRequest {
 
             connectionUrl = new URL(url);
             connection = (HttpsURLConnection) connectionUrl.openConnection();
+            connection.setConnectTimeout(DEFAULT_REQUEST_TIMEOUT);
 
             if (debug) {
                 logger.debug("Request url: " + connectionUrl);
             }
 
-            addConnectionParams(connection, auth, method, userAgent, contentType, data);
+            addConnectionParams(connection, auth, method, userAgent, data);
 
             if (method.equals(POST_METHOD) && debug) {
                 logger.debug("Request body: " + data);
             }
 
-            if (connection.getResponseCode() >= HTTP_STATUS_SERVER_ERROR) {
+            int responseCode = connection.getResponseCode();
+
+            if (responseCode >= HttpsURLConnection.HTTP_INTERNAL_ERROR) {
                 response = getStringRequest(connection, true);
-                String message = ParseToObject.responseToMap(response, contentType).get("error_message").toString();
-
-                throw new HttpException(message);
-            } else if (connection.getResponseCode() >= HTTP_STATUS_BAD_REQUEST) {
-
-                response = getStringRequest(connection, true);
-
-                RestError err = new RestError();
-                if (response != null && !response.isEmpty()) {
-                    err = ParseToObject.getError(response, contentType);
+                Object error = ParseToObject.responseToMap(response).get(ERROR_MESSAGE_RESPONSE_OBJECT);
+                String message = null;
+                if (error != null) {
+                    message = error.toString();
                 }
 
-                if (connection.getResponseCode() == HTTP_STATUS_UNAUTHORIZED) {
+                throw new HttpException(message, responseCode);
+            } else if (responseCode >= HttpsURLConnection.HTTP_BAD_REQUEST) {
+
+                response = getStringRequest(connection, true);
+
+                RestError err = null;
+                if (response != null && !response.isEmpty()) {
+                    err = ParseToObject.getError(response);
+                }
+
+                if (responseCode == HttpsURLConnection.HTTP_UNAUTHORIZED) {
                     throw new AuthenticationException(err.getError());
+                } else if (err != null) {
+                    throw new HttpException(err.getError(), responseCode);
                 } else {
-                    throw new HttpException(err.getError());
+                    Object error = ParseToObject.responseToMap(response).get(ERROR_MESSAGE_RESPONSE_OBJECT);
+                    String message = null;
+                    if (error != null) {
+                        message = error.toString();
+                    }
+                    throw new HttpException(message, responseCode);
                 }
 
             } else {
                 response = getStringRequest(connection, false);
             }
 
-            if (method.equals(POST_METHOD) && connection.getResponseCode() == HTTP_STATUS_NO_CONTENT) {
-                response = "true";
+            if (method.equals(POST_METHOD) && (responseCode == HttpsURLConnection.HTTP_NO_CONTENT
+                    || responseCode == HttpsURLConnection.HTTP_OK)) {
+                response = UPDATE_RESPONSE_VALUE;
             }
 
         } catch (MalformedURLException e) {
@@ -108,7 +135,7 @@ public class MakeHttpRequest {
     }
 
     private void addConnectionParams(HttpsURLConnection connection, BasicAuth auth, String method, String userAgent,
-                                     String contentType, String data) throws IOException {
+                                     String data) throws IOException {
 
         if (method != null && !method.isEmpty()) {
             connection.setRequestMethod(method);
@@ -116,27 +143,22 @@ public class MakeHttpRequest {
             connection.setRequestMethod(GET_METHOD);
         }
 
-        connection.setRequestProperty("Authorization", auth.getHeaders());
-        connection.setRequestProperty("Connection", "Keep-Alive");
+        connection.setRequestProperty(AUTHORIZATION_HEADER_NAME, auth.getHeaders());
+        connection.setRequestProperty(CONNECTION_HEADER_NAME, CONNECTION_HEADER_VALUE);
 
         if (userAgent != null && !userAgent.isEmpty()) {
-            connection.setRequestProperty("User-Agent", userAgent);
+            connection.setRequestProperty(USER_AGENT_HEADER_NAME, userAgent);
         } else {
-            connection.setRequestProperty("User-Agent", RestClient.DEFAULT_USER_AGENT);
+            connection.setRequestProperty(USER_AGENT_HEADER_NAME, NextCallerClient.DEFAULT_USER_AGENT);
         }
 
         if (data != null) {
 
-            if (contentType != null && contentType.equals(RestClient.JSON_FORMAT)) {
-                connection.setRequestProperty("Content-Type", "application/json");
-            } else {
-                connection.setRequestProperty("Content-Type", "application/xml");
-            }
-
+            connection.setRequestProperty(CONTENT_TYPE_HEADER_NAME, CONTENT_TYPE_APPLICATION_JSON);
             connection.setDoOutput(true);
 
-            byte[] postDataBytes = data.getBytes("UTF-8");
-            connection.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+            byte[] postDataBytes = data.getBytes(MESSAGE_ENCODING);
+            connection.setRequestProperty(CONTENT_LENGTH_HEADER_NAME, String.valueOf(postDataBytes.length));
             connection.getOutputStream().write(postDataBytes);
             connection.getOutputStream().flush();
             connection.getOutputStream().close();
@@ -146,7 +168,7 @@ public class MakeHttpRequest {
 
     private String getStringRequest(HttpsURLConnection con, boolean isError) {
 
-        String input = "";
+        StringBuffer input = new StringBuffer();
 
         if (con != null) {
 
@@ -168,7 +190,7 @@ public class MakeHttpRequest {
                     String str;
 
                     while ((str = br.readLine()) != null) {
-                        input += str;
+                        input.append(str);
                     }
                 }
 
@@ -189,7 +211,7 @@ public class MakeHttpRequest {
 
         }
 
-        return input;
+        return input.toString();
     }
 
 }
