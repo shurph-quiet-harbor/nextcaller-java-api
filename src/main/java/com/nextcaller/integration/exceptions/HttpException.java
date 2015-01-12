@@ -6,28 +6,26 @@ import org.slf4j.LoggerFactory;
 
 public class HttpException extends Exception {
 
-    private static final Logger logger = LoggerFactory.getLogger(HttpException.class);
     private ErrorMessage errorMessage;
+    private int httpStatusCode;
 
-    public HttpException(String message) {
-        super("HttpException: " + message);
-
-        logger.error("HttpException: " + message);
+    public HttpException(String message, int httpStatusCode) {
+        super("HttpException(" + httpStatusCode + ") : " + message);
     }
 
-    public HttpException(ErrorMessage err) {
-        super("HttpException(" + err.getCode() + ") : " + err.getMessage());
+    public HttpException(ErrorMessage err, int httpStatusCode) {
+        super("HttpException(" + httpStatusCode + ") : http status code - " + err.getCode() + ", message - "
+                + err.getMessage());
 
         this.errorMessage = err;
-
-        logger.error("HttpException(" + err.getCode() + ") : " + err.getMessage());
+        this.httpStatusCode = httpStatusCode;
     }
 
     public ErrorMessage getErrorMessage() {
         return errorMessage;
     }
 
-    public void setErrorMessage(ErrorMessage errorMessage) {
-        this.errorMessage = errorMessage;
+    public int getHttpStatusCode() {
+        return httpStatusCode;
     }
 }

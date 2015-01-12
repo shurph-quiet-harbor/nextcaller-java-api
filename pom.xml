@@ -6,7 +6,7 @@
 
     <groupId>com.nextcaller.integration-java</groupId>
     <artifactId>integration-java</artifactId>
-    <version>1.0</version>
+    <version>0.0.2</version>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -20,12 +20,6 @@
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-jaxrs</artifactId>
             <version>1.9.13</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-xml</artifactId>
-            <version>2.4.0</version>
         </dependency>
 
         <dependency>
@@ -44,6 +38,12 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
