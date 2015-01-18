@@ -53,9 +53,11 @@ public class PrepareUrlUtil {
         return url.toString();
     }
 
-    public static String prepareUrlByPlatformStatistics(boolean sandbox) {
+    public static String prepareUrlByPlatformStatistics(int page, boolean sandbox) {
         StringBuffer url = getBaseUrl(sandbox);
-        url.append("platform_users/?");
+        url.append("platform_users/?page=").
+                append(page).
+                append("&");
         appendFormat(url);
 
         return url.toString();

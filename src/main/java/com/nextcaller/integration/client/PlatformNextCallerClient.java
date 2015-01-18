@@ -186,9 +186,9 @@ public class PlatformNextCallerClient extends AbstractClient {
      * @throws IOException
      * @throws ValidateException
      */
-    public Map<String, Object> getPlatformStatistics(boolean debug)
+    public Map<String, Object> getPlatformStatistics(int page, boolean debug)
             throws AuthenticationException, HttpException, IOException, ValidateException {
-        String url = PrepareUrlUtil.prepareUrlByPlatformStatistics(sandbox);
+        String url = PrepareUrlUtil.prepareUrlByPlatformStatistics(page, sandbox);
 
         String response = makeHttpRequest.makeRequest(auth, url, null, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT, debug);
 
@@ -204,9 +204,9 @@ public class PlatformNextCallerClient extends AbstractClient {
      * @throws IOException
      * @throws ValidateException
      */
-    public Map<String, Object> getPlatformStatistics()
+    public Map<String, Object> getPlatformStatistics(int page)
             throws AuthenticationException, HttpException, IOException, ValidateException {
-        return getPlatformStatistics(DEFAULT_DEBUG);
+        return getPlatformStatistics(page, DEFAULT_DEBUG);
     }
 
     /**

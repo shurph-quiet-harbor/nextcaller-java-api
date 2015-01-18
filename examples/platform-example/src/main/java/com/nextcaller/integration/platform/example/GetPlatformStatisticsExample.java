@@ -17,6 +17,7 @@ public class GetPlatformStatisticsExample {
 
     private static final String username = "XXXXX";
     private static final String password = "XXXXX";
+    private static final int page = 1;
     private static final boolean sandbox = true;
     private static final boolean debug = true;
 
@@ -26,7 +27,7 @@ public class GetPlatformStatisticsExample {
         PlatformNextCallerClient client = new PlatformNextCallerClient(username, password, sandbox);
 
         try {
-            Map<String, Object> response = client.getPlatformStatistics(debug);
+            Map<String, Object> response = client.getPlatformStatistics(page, debug);
             List<Map<String, Object>> records = (List<Map<String, Object>>)response.get("object_list");
             
             for (Map<String, Object> user : records) {
