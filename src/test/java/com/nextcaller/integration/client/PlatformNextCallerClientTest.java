@@ -397,6 +397,19 @@ public class PlatformNextCallerClientTest {
     }
 
     @Test
+    public void testGetAllStatisticsWithoutPageParameter() throws HttpException, IOException, AuthenticationException, ValidateException {
+        when(client.getPlatformStatistics()).thenReturn(platformStatisticsJsonResultExample);
+
+        Map<String, Object> response = client.getPlatformStatistics();
+
+        assertNotNull(response.get("successful_platform_calls"));
+        assertNotNull(response.get("total_platform_calls"));
+        assertEquals(((Map<String, Object>)((List)response.get("object_list")).get(0)).get("username"), "test");
+        assertEquals(((Map<String, Object>)((List)response.get("object_list")).get(0)).get("number_of_operations"), 3);
+        assertEquals(((response.get("page"))), 1);
+    }
+
+    @Test
     public void testGetUsersStatistics() throws HttpException, IOException, AuthenticationException, ValidateException {
         String platformUsername = "test";
 

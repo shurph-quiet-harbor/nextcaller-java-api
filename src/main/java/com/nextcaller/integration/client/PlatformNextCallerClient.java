@@ -180,6 +180,7 @@ public class PlatformNextCallerClient extends AbstractClient {
      * Get platform statistics
      *
      * @param debug boolean (default false)
+     * @param page int
      * @return map statistics
      * @throws AuthenticationException
      * @throws HttpException
@@ -198,6 +199,7 @@ public class PlatformNextCallerClient extends AbstractClient {
     /**
      * Get platform statistics
      *
+     * @param page int
      * @return map statistics
      * @throws AuthenticationException
      * @throws HttpException
@@ -207,6 +209,20 @@ public class PlatformNextCallerClient extends AbstractClient {
     public Map<String, Object> getPlatformStatistics(int page)
             throws AuthenticationException, HttpException, IOException, ValidateException {
         return getPlatformStatistics(page, DEFAULT_DEBUG);
+    }
+
+    /**
+     * Get platform statistics
+     *
+     * @return map statistics
+     * @throws AuthenticationException
+     * @throws HttpException
+     * @throws IOException
+     * @throws ValidateException
+     */
+    public Map<String, Object> getPlatformStatistics()
+            throws AuthenticationException, HttpException, IOException, ValidateException {
+        return getPlatformStatistics(1);
     }
 
     /**
