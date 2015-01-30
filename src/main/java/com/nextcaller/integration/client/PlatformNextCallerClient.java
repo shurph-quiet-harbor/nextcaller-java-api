@@ -107,6 +107,36 @@ public class PlatformNextCallerClient extends AbstractClient {
     }
 
     /**
+     * Get profiles by a address and name
+     *
+     * @param addressData dictionary of address, name data
+     * @param debug boolean (default false)
+     * @return map user
+     * @throws AuthenticationException
+     * @throws HttpException
+     * @throws IOException
+     */
+    public Map<String, Object> getByAddressName(Map<String, String> addressData, String platformUsername, boolean debug)
+            throws AuthenticationException, HttpException, IOException, ValidateException {
+        ValidateUtil.validatePlatformUsername(platformUsername);
+        return super.getByAddressName(addressData, platformUsername, debug);
+    }
+
+    /**
+     * Get profiles by a address and name
+     *
+     * @param addressData dictionary of address, name data
+     * @return map user
+     * @throws AuthenticationException
+     * @throws HttpException
+     * @throws IOException
+     */
+    public Map<String, Object> getByAddressName(Map<String, String> addressData, String platformUsername)
+            throws AuthenticationException, HttpException, IOException, ValidateException {
+        return getByAddressName(addressData, platformUsername, DEFAULT_DEBUG);
+    }
+
+    /**
      * Get fraud level by a phone
      *
      * @param phone            10 digits phone, str ot int

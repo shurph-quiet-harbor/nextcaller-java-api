@@ -1,8 +1,5 @@
 package com.nextcaller.integration.client;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
 import com.nextcaller.integration.exceptions.AuthenticationException;
 import com.nextcaller.integration.exceptions.HttpException;
 import com.nextcaller.integration.exceptions.ValidateException;
@@ -11,8 +8,13 @@ import com.nextcaller.integration.response.RestError;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class NextCallerClientTest {
 
@@ -213,6 +215,56 @@ public class NextCallerClientTest {
         when(client.getByPhone(phone)).thenReturn(phoneJsonResultExample);
 
         Map<String, Object> response = client.getByPhone(phone);
+        Map<String, Object> user = (Map<String, Object>)((List)response.get("records")).get(0);
+
+        assertEquals(user.get("email"), "demo@nextcaller.com");
+        assertEquals(user.get("first_name"), "Jerry");
+        assertEquals(user.get("last_name"), "Seinfeld");
+    }
+
+    @Test(expected = ValidateException.class)
+    public void testByAddressNameWithNotFullDataAddressName() throws HttpException, IOException, AuthenticationException, ValidateException {
+        final Map<String, String> addressNameData = new HashMap<String, String>(){{
+            put("first_name", "Jerry");
+            put("last_name", "Seinfeld");
+            put("address", "129 West 81st Street");
+            put("city", "New York");
+        }};
+
+        when(client.getByAddressName(addressNameData)).thenThrow(new ValidateException("Either pair of city and state fields or zip_code field should be supplied"));
+
+        Map<String, Object> response = client.getByAddressName(addressNameData);
+    }
+
+    @Test(expected = ValidateException.class)
+    public void testByAddressNameWithWrongZipCode() throws HttpException, IOException, AuthenticationException, ValidateException {
+        final String zipCode = "1002";
+        final Map<String, String> addressNameData = new HashMap<String, String>(){{
+            put("first_name", "Jerry");
+            put("last_name", "Seinfeld");
+            put("address", "129 West 81st Street");
+            put("city", "New York");
+            put("zip_code", zipCode);
+        }};
+
+        when(client.getByAddressName(addressNameData)).thenThrow(new ValidateException(String.format("Invalid zip code: %s", zipCode)));
+
+        Map<String, Object> response = client.getByAddressName(addressNameData);
+    }
+
+    @Test
+    public void testByAddressName() throws HttpException, IOException, AuthenticationException, ValidateException {
+        final Map<String, String> addressNameData = new HashMap<String, String>(){{
+            put("first_name", "Jerry");
+            put("last_name", "Seinfeld");
+            put("address", "129 West 81st Street");
+            put("city", "New York");
+            put("zip_code", "10024");
+        }};
+
+        when(client.getByAddressName(addressNameData)).thenReturn(phoneJsonResultExample);
+
+        Map<String, Object> response = client.getByAddressName(addressNameData);
         Map<String, Object> user = (Map<String, Object>)((List)response.get("records")).get(0);
 
         assertEquals(user.get("email"), "demo@nextcaller.com");

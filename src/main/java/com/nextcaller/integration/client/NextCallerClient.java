@@ -79,6 +79,35 @@ public class NextCallerClient extends AbstractClient {
     }
 
     /**
+     * Get profiles by a address and name
+     *
+     * @param addressData dictionary of address, name data
+     * @param debug boolean (default false)
+     * @return map user
+     * @throws AuthenticationException
+     * @throws HttpException
+     * @throws IOException
+     */
+    public Map<String, Object> getByAddressName(Map<String, String> addressData, boolean debug)
+            throws AuthenticationException, HttpException, IOException, ValidateException {
+        return super.getByAddressName(addressData, null, debug);
+    }
+
+    /**
+     * Get profiles by a address and name
+     *
+     * @param addressData dictionary of address, name data
+     * @return map user
+     * @throws AuthenticationException
+     * @throws HttpException
+     * @throws IOException
+     */
+    public Map<String, Object> getByAddressName(Map<String, String> addressData)
+            throws AuthenticationException, HttpException, IOException, ValidateException {
+        return getByAddressName(addressData, DEFAULT_DEBUG);
+    }
+
+    /**
      * Get profiles by a phone
      *
      * @param phone 10 digits phone, str ot int

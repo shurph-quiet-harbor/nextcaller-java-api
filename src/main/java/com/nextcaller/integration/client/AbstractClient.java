@@ -94,6 +94,29 @@ abstract class AbstractClient {
     }
 
     /**
+     * Get profiles by a phone
+     *
+     * @param addressNameData  dictionary with address data
+     * @param platformUsername Platform username
+     * @param debug            boolean (default false)
+     * @return map user
+     * @throws AuthenticationException
+     * @throws HttpException
+     * @throws IOException
+     */
+    protected Map<String, Object> getByAddressName(Map<String, String> addressNameData, String platformUsername, boolean debug)
+            throws AuthenticationException, HttpException, IOException, ValidateException {
+
+        ValidateUtil.validateAddressName(addressNameData);
+
+        String url = PrepareUrlUtil.prepareUrlByAddressName(addressNameData, platformUsername, sandbox);
+
+        String response = makeHttpRequest.makeRequest(auth, url, null, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT, debug);
+
+        return ParseToObject.responseToMap(response);
+    }
+
+    /**
      * Get fraud level by a phone
      *
      * @param phone            10 digits phone, str ot int

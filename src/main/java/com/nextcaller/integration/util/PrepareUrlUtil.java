@@ -2,6 +2,11 @@ package com.nextcaller.integration.util;
 
 import com.nextcaller.integration.client.MakeHttpRequest;
 
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 public class PrepareUrlUtil {
 
     public static final String SERVER_URL = "https://api.nextcaller.com/v2/";
@@ -28,6 +33,15 @@ public class PrepareUrlUtil {
             url.append("&platform_username=").append(platformUsername);
         }
 
+        return url.toString();
+    }
+
+    public static String prepareUrlByAddressName(Map<String, String> addressNameData, String platformUsername, boolean sandbox) {
+        StringBuffer url = getBaseUrl(sandbox);
+        if (platformUsername != null) {
+            addressNameData.put("platform_username", platformUsername);
+        }
+        url.append("records/").append(mapToFormEncodedString(addressNameData));
         return url.toString();
     }
 
@@ -69,6 +83,42 @@ public class PrepareUrlUtil {
 
     private static void appendFormat(StringBuffer url) {
         url.append("format=").append(MakeHttpRequest.JSON_FORMAT);
+    }
+
+    public static String join(List<String> list, String separator) {
+        StringBuilder sb = new StringBuilder();
+        boolean first = true;
+        for (final  String str: list) {
+            if (first) first = false;
+            else sb.append(separator);
+            sb.append(str);
+        }
+        return sb.toString();
+    }
+
+    private static String encodeURIComponent(String component)   {
+        String result = null;
+        try {
+            result = URLEncoder.encode(component, "UTF-8")
+                    .replaceAll("%28", "(")
+                    .replaceAll("%29", ")")
+                    .replaceAll("\\+", "%20")
+                    .replaceAll("%27", "'")
+                    .replaceAll("%21", "!")
+                    .replaceAll("%7E", "~");
+        }
+        catch (java.io.UnsupportedEncodingException e) {
+            result = component;
+        }
+        return result;
+    }
+
+    private static String mapToFormEncodedString(Map<String, String> data) {
+        final List<String> acc = new ArrayList<String>();
+        for (Map.Entry<String, String> entry : data.entrySet()) {
+            acc.add(encodeURIComponent(entry.getKey() + "=" + entry.getValue()));
+        }
+        return "?" + join(acc, "&");
     }
 
 }

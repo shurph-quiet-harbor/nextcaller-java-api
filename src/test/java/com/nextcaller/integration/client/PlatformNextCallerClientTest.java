@@ -8,6 +8,7 @@ import com.nextcaller.integration.response.RestError;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -313,6 +314,75 @@ public class PlatformNextCallerClientTest {
         when(client.getByPhone(phone, platformUsername)).thenReturn(phoneJsonResultExample);
 
         Map<String, Object> response = client.getByPhone(phone, platformUsername);
+        Map<String, Object> user = (Map<String, Object>)((List)response.get("records")).get(0);
+
+        assertEquals(user.get("email"), "demo@nextcaller.com");
+        assertEquals(user.get("first_name"), "Jerry");
+        assertEquals(user.get("last_name"), "Seinfeld");
+    }
+
+    @Test(expected = ValidateException.class)
+    public void testByAddressNameWithNotFullDataAddressName() throws HttpException, IOException, AuthenticationException, ValidateException {
+        final String platformUsername = "test";
+        final Map<String, String> addressNameData = new HashMap<String, String>(){{
+            put("first_name", "Jerry");
+            put("last_name", "Seinfeld");
+            put("address", "129 West 81st Street");
+            put("city", "New York");
+        }};
+
+        when(client.getByAddressName(addressNameData, platformUsername)).thenThrow(new ValidateException("Either pair of city and state fields or zip_code field should be supplied"));
+
+        Map<String, Object> response = client.getByAddressName(addressNameData, platformUsername);
+    }
+
+    @Test(expected = ValidateException.class)
+    public void testByAddressNameWithWrongZipCode() throws HttpException, IOException, AuthenticationException, ValidateException {
+        final String platformUsername = "test";
+        final String zipCode = "1002";
+        final Map<String, String> addressNameData = new HashMap<String, String>(){{
+            put("first_name", "Jerry");
+            put("last_name", "Seinfeld");
+            put("address", "129 West 81st Street");
+            put("city", "New York");
+            put("zip_code", zipCode);
+        }};
+
+        when(client.getByAddressName(addressNameData, platformUsername)).thenThrow(new ValidateException(String.format("Invalid zip code: %s", zipCode)));
+
+        Map<String, Object> response = client.getByAddressName(addressNameData, platformUsername);
+    }
+
+    @Test(expected = ValidateException.class)
+    public void testByAddressNameWithoutPlatformUsername() throws HttpException, IOException, AuthenticationException, ValidateException {
+        final Map<String, String> addressNameData = new HashMap<String, String>(){{
+            put("first_name", "Jerry");
+            put("last_name", "Seinfeld");
+            put("address", "129 West 81st Street");
+            put("city", "New York");
+            put("zip_code", "10024");
+        }};
+        String platformUsername = "";
+
+        when(client.getByAddressName(addressNameData, platformUsername)).thenThrow(new ValidateException("Invalid Platform Username. Platform Username cannot be blank."));
+
+        Map<String, Object> response = client.getByAddressName(addressNameData, platformUsername);
+    }
+
+    @Test
+    public void testByAddressData() throws HttpException, IOException, AuthenticationException, ValidateException {
+        final String platformUsername = "test";
+        final Map<String, String> addressNameData = new HashMap<String, String>(){{
+            put("first_name", "Jerry");
+            put("last_name", "Seinfeld");
+            put("address", "129 West 81st Street");
+            put("city", "New York");
+            put("zip_code", "10024");
+        }};
+
+        when(client.getByAddressName(addressNameData, platformUsername)).thenReturn(phoneJsonResultExample);
+
+        Map<String, Object> response = client.getByAddressName(addressNameData, platformUsername);
         Map<String, Object> user = (Map<String, Object>)((List)response.get("records")).get(0);
 
         assertEquals(user.get("email"), "demo@nextcaller.com");
