@@ -16,16 +16,16 @@ public class GetProfileByIdExample {
 
     private static final String username = "XXXXX";
     private static final String password = "XXXXX";
-    private static final boolean sandbox = true;
     private static final String profileId = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
 
     public static void main(String[] args) {
         logger.info("Run get by profile id");
 
-        NextCallerClient client = new NextCallerClient(username, password, sandbox);
+        NextCallerClient.Builder builder = new NextCallerClient.Builder(username, password);
+        NextCallerClient client = builder.setDebugMode().setSandboxMode().build();
 
         try {
-            Map<String, Object> profile = client.getByProfileId(profileId, true);
+            Map<String, Object> profile = client.getByProfileId(profileId);
 
             System.out.println("first name: " + profile.get("first_name"));
             System.out.println("middle name: " + profile.get("middle_name"));

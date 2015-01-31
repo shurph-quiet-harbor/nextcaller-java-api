@@ -14,9 +14,9 @@ public class ValidateUtil {
     private static final String USERNAME_PROFILE_ID_REGEX = "^[a-zA-Z0-9]*$";
     private static final int ZIP_CODE_LENGTH = 5;
     private static final int EXTENDED_ZIP_CODE_LENGTH = 4;
-    private static final List<String> MANDATORY_ADDRES_NAME_FIELDS =
+    private static final List<String> MANDATORY_ADDRESS_NAME_FIELDS =
             Arrays.asList("first_name", "last_name", "address");
-    private static final List<String> ALLOWED_ADDRES_NAME_FIELDS =
+    private static final List<String> ALLOWED_ADDRESS_NAME_FIELDS =
             Arrays.asList(
                     "first_name", "last_name", "address", "city", "state",
                     "zip_code", "middle_name", "apt_suite", "extended_zip");
@@ -51,9 +51,9 @@ public class ValidateUtil {
         for (Map.Entry<String, String> entry : addressData.entrySet()) {
             final String key = entry.getKey();
             final String value = entry.getValue();
-            if (!ALLOWED_ADDRES_NAME_FIELDS.contains(key)) {
+            if (!ALLOWED_ADDRESS_NAME_FIELDS.contains(key)) {
                 throw new ValidateException(String.format(
-                        "Invalid address, name field: %s. Allowed fields: %s.", key, PrepareUrlUtil.join(ALLOWED_ADDRES_NAME_FIELDS, ", ")));
+                        "Invalid address, name field: %s. Allowed fields: %s.", key, PrepareUrlUtil.join(ALLOWED_ADDRESS_NAME_FIELDS, ", ")));
             }
             if (value == null || value.isEmpty()) {
                 throw new ValidateException(String.format(
@@ -66,10 +66,10 @@ public class ValidateUtil {
                 throw new ValidateException(String.format("Invalid zip code: %s", value));
             }
         }
-        for (String field: MANDATORY_ADDRES_NAME_FIELDS) {
+        for (String field: MANDATORY_ADDRESS_NAME_FIELDS) {
             if (!addressData.containsKey(field)) {
                 throw new ValidateException(String.format(
-                        "Not all mandatory fields are supplied: %s.", PrepareUrlUtil.join(MANDATORY_ADDRES_NAME_FIELDS, ", ")));
+                        "Not all mandatory fields are supplied: %s.", PrepareUrlUtil.join(MANDATORY_ADDRESS_NAME_FIELDS, ", ")));
             }
         }
         final String city = addressData.getOrDefault("city", "");

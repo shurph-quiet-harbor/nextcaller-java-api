@@ -17,18 +17,17 @@ public class GetProfileByPhoneExample {
 
     private static final String username = "XXXXX";
     private static final String password = "XXXXX";
-    private static final boolean sandbox = true;
-    private static final boolean debug = true;
     private static final String phoneNumber = "1211211212";
     private static final String platformUsername = "XXXXX";
 
     public static void main(String[] args) {
         logger.info("Run get by phone");
 
-        PlatformNextCallerClient client = new PlatformNextCallerClient(username, password, sandbox);
-        
+        PlatformNextCallerClient.Builder builder = new PlatformNextCallerClient.Builder(username, password);
+        PlatformNextCallerClient client = builder.setDebugMode().setSandboxMode().build();
+
         try {
-            Map<String, Object> response = client.getByPhone(phoneNumber, platformUsername, debug);
+            Map<String, Object> response = client.getByPhone(phoneNumber, platformUsername);
             List<Map<String, Object>> records = (List<Map<String, Object>>)response.get("records");
             Map<String, Object> profile = records.get(0);
             

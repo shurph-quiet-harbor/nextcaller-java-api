@@ -18,16 +18,15 @@ public class GetPlatformStatisticsExample {
     private static final String username = "XXXXX";
     private static final String password = "XXXXX";
     private static final int page = 1;
-    private static final boolean sandbox = true;
-    private static final boolean debug = true;
 
     public static void main(String[] args) {
         logger.info("Run get platform statistics");
-        
-        PlatformNextCallerClient client = new PlatformNextCallerClient(username, password, sandbox);
+
+        PlatformNextCallerClient.Builder builder = new PlatformNextCallerClient.Builder(username, password);
+        PlatformNextCallerClient client = builder.setDebugMode().setSandboxMode().build();
 
         try {
-            Map<String, Object> response = client.getPlatformStatistics(page, debug);
+            Map<String, Object> response = client.getPlatformStatistics(page);
             List<Map<String, Object>> records = (List<Map<String, Object>>)response.get("object_list");
             
             for (Map<String, Object> user : records) {

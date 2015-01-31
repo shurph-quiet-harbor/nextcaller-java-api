@@ -16,21 +16,20 @@ public class UpdateProfileExample {
     
     private static final String username = "XXXXX";
     private static final String password = "XXXXX";
-    private static final boolean sandbox = true;
-    private static final boolean debug = true;
     private static final String profileId = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
     private static final String platformUsername = "XXXXX";
 
     public static void main(String[] args) {
         logger.info("Run update by profile id");
 
-        PlatformNextCallerClient client = new PlatformNextCallerClient(username, password, sandbox);
+        PlatformNextCallerClient.Builder builder = new PlatformNextCallerClient.Builder(username, password);
+        PlatformNextCallerClient client = builder.setDebugMode().setSandboxMode().build();
 
         try {
             Map<String, Object> data = new HashMap<String, Object>();
             data.put("email", "test@test.com");
 
-            client.updateByProfileId(profileId, data, platformUsername, debug);
+            client.updateByProfileId(profileId, data, platformUsername);
 
             logger.info("Update user success");
         } catch (HttpException e) {

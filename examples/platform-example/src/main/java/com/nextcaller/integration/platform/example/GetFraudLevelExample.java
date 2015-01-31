@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.lang.String;
 import java.util.Map;
 
 public class GetFraudLevelExample {
@@ -16,18 +17,17 @@ public class GetFraudLevelExample {
 
     private static final String username = "XXXXX";
     private static final String password = "XXXXX";
-    private static final boolean sandbox = true;
-    private static final boolean debug = true;
     private static final String phoneNumber = "1211211212";
     private static final String platformUsername = "XXXXX";
 
     public static void main(String[] args) {
         logger.info("Run get fraud level");
 
-        PlatformNextCallerClient client = new PlatformNextCallerClient(username, password, sandbox);
+        PlatformNextCallerClient.Builder builder = new PlatformNextCallerClient.Builder(username, password);
+        PlatformNextCallerClient client = builder.setDebugMode().setSandboxMode().build();
 
         try {
-            Map<String, Object> response = client.getFraudLevel(phoneNumber, platformUsername, debug);
+            Map<String, Object> response = client.getFraudLevel(phoneNumber, platformUsername);
 
             System.out.println("spoofed: " + response.get("spoofed"));
             System.out.println("fraud_risk: " + response.get("fraud_risk"));

@@ -17,13 +17,13 @@ public class UpdatePlatformUserExample {
 
     private static final String username = "XXXXX";
     private static final String password = "XXXXX";
-    private static final boolean sandbox = true;
     private static final String platformUsername = "XXXXX";
 
     public static void main(String[] args) {
         logger.info("run update platform user");
 
-        PlatformNextCallerClient client = new PlatformNextCallerClient(username, password, sandbox);
+        PlatformNextCallerClient.Builder builder = new PlatformNextCallerClient.Builder(username, password);
+        PlatformNextCallerClient client = builder.setDebugMode().setSandboxMode().build();
 
         try {
             Map<String, Object> data = new HashMap<String, Object>();
@@ -31,7 +31,7 @@ public class UpdatePlatformUserExample {
             data.put("last_name", "test");
             data.put("email", "test@test.com");
 
-            client.updatePlatformUser(platformUsername, data, true);
+            client.updatePlatformUser(platformUsername, data);
 
             logger.info("Update user success");
         } catch (HttpException e) {

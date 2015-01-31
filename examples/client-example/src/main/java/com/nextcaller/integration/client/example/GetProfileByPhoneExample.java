@@ -17,16 +17,16 @@ public class GetProfileByPhoneExample {
 
     private static final String username = "XXXXX";
     private static final String password = "XXXXX";
-    private static final boolean sandbox = true;
     private static final String phoneNumber = "1211211212";
 
     public static void main(String[] args) {
         logger.info("Run get by phone");
-        
-        NextCallerClient client = new NextCallerClient(username, password, sandbox);
-        
+
+        NextCallerClient.Builder builder = new NextCallerClient.Builder(username, password);
+        NextCallerClient client = builder.setDebugMode().setSandboxMode().build();
+
         try {
-            Map<String, Object> response = client.getByPhone(phoneNumber, true);
+            Map<String, Object> response = client.getByPhone(phoneNumber);
             List<Map<String, Object>> records = (List<Map<String, Object>>)response.get("records");
             Map<String, Object> profile = records.get(0);
             

@@ -16,16 +16,16 @@ public class GetFraudLevelExample {
 
     private static final String username = "XXXXX";
     private static final String password = "XXXXX";
-    private static final boolean sandbox = true;
     private static final String phoneNumber = "1211211212";
 
     public static void main(String[] args) {
         logger.info("Run get fraud level");
 
-        NextCallerClient client = new NextCallerClient(username, password, sandbox);
+        NextCallerClient.Builder builder = new NextCallerClient.Builder(username, password);
+        NextCallerClient client = builder.setDebugMode().setSandboxMode().build();
 
         try {
-            Map<String, Object> response = client.getFraudLevel(phoneNumber, true);
+            Map<String, Object> response = client.getFraudLevel(phoneNumber);
 
             System.out.println("spoofed: " + response.get("spoofed"));
             System.out.println("fraud_risk: " + response.get("fraud_risk"));

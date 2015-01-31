@@ -17,8 +17,6 @@ public class GetProfileByAddressDataExample {
 
     private static final String username = "XXXXX";
     private static final String password = "XXXXX";
-    private static final boolean sandbox = true;
-    private static final boolean debug = true;
     private static final Map<String, String> addressNameData = new HashMap<String, String>(){{
         put("first_name", "Jerry");
         put("last_name", "Seinfeld");
@@ -29,10 +27,11 @@ public class GetProfileByAddressDataExample {
     public static void main(String[] args) {
         logger.info("Run get by address and name");
 
-        PlatformNextCallerClient client = new PlatformNextCallerClient(username, password, sandbox);
-        
+        PlatformNextCallerClient.Builder builder = new PlatformNextCallerClient.Builder(username, password);
+        PlatformNextCallerClient client = builder.setDebugMode().setSandboxMode().build();
+
         try {
-            Map<String, Object> response = client.getByAddressName(addressNameData, platformUsername, debug);
+            Map<String, Object> response = client.getByAddressName(addressNameData, platformUsername);
             List<Map<String, Object>> records = (List<Map<String, Object>>)response.get("records");
             Map<String, Object> profile = records.get(0);
             

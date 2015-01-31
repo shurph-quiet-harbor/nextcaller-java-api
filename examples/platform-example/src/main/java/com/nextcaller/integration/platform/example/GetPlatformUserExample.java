@@ -16,16 +16,16 @@ public class GetPlatformUserExample {
 
     private static final String username = "XXXXX";
     private static final String password = "XXXXX";
-    private static final boolean sandbox = true;
     private static final String platformUsername = "XXXXX";
 
     public static void main(String[] args) {
         logger.info("run get platform user");
 
-        PlatformNextCallerClient client = new PlatformNextCallerClient(username, password, sandbox);
+        PlatformNextCallerClient.Builder builder = new PlatformNextCallerClient.Builder(username, password);
+        PlatformNextCallerClient client = builder.setDebugMode().setSandboxMode().build();
 
         try {
-            Map<String, Object> user = client.getPlatformUser(platformUsername, true);
+            Map<String, Object> user = client.getPlatformUser(platformUsername);
 
             System.out.println("first name: " + user.get("first_name"));
             System.out.println("last name: " + user.get("last_name"));

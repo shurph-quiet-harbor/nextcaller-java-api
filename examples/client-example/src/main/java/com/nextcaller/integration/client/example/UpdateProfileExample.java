@@ -17,19 +17,19 @@ public class UpdateProfileExample {
     
     private static final String username = "XXXXX";
     private static final String password = "XXXXX";
-    private static final boolean sandbox = true;
     private static final String profileId = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
 
     public static void main(String[] args) {
         logger.info("Run update by profile id");
 
-        NextCallerClient client = new NextCallerClient(username, password, sandbox);
+        NextCallerClient.Builder builder = new NextCallerClient.Builder(username, password);
+        NextCallerClient client = builder.setDebugMode().setSandboxMode().build();
 
         try {
             Map<String, Object> data = new HashMap<String, Object>();
             data.put("email", "test@test.com");
 
-            client.updateByProfileId(profileId, data, true);
+            client.updateByProfileId(profileId, data);
 
             logger.info("Update user success");
         } catch (HttpException e) {
