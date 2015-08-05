@@ -114,7 +114,7 @@ public class NextCallerClient extends AbstractClient {
     /**
      * Get profiles by a phone
      *
-     * @param phone 10 digits phone, str ot int
+     * @param phone 10 digits phone
      * @return map user
      * @throws AuthenticationException
      * @throws HttpException
@@ -143,7 +143,7 @@ public class NextCallerClient extends AbstractClient {
     /**
      * Get fraud level by a phone
      *
-     * @param phone 10 digits phone, str ot int
+     * @param phone 10 digits phone
      * @return map user
      * @throws AuthenticationException
      * @throws HttpException

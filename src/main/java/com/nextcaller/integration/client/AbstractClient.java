@@ -5,8 +5,8 @@ import com.nextcaller.integration.exceptions.AuthenticationException;
 import com.nextcaller.integration.exceptions.HttpException;
 import com.nextcaller.integration.exceptions.ValidateException;
 import com.nextcaller.integration.response.ParseToObject;
+import com.nextcaller.integration.util.CleanUtil;
 import com.nextcaller.integration.util.PrepareUrlUtil;
-import com.nextcaller.integration.util.ValidateUtil;
 import com.nextcaller.integration.util.VersionProvider;
 
 import java.io.IOException;
@@ -57,8 +57,6 @@ abstract class AbstractClient {
      */
     protected Map<String, Object> getByProfileId(String profileId, String platformUsername)
             throws AuthenticationException, HttpException, IOException, ValidateException {
-        ValidateUtil.validateProfileId(profileId);
-        
         String url = PrepareUrlUtil.prepareUrlByProfileId(profileId, platformUsername, sandbox, version);
 
         String response = makeHttpRequest.makeRequest(auth, url, null, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT, debug);
@@ -69,7 +67,7 @@ abstract class AbstractClient {
     /**
      * Get profiles by a phone
      *
-     * @param phone            10 digits phone, str ot int
+     * @param phone            10 digits phone
      * @param platformUsername Platform username
      * @return map user
      * @throws AuthenticationException
@@ -79,7 +77,8 @@ abstract class AbstractClient {
     protected Map<String, Object> getByPhone(String phone, String platformUsername)
             throws AuthenticationException, HttpException, IOException, ValidateException {
 
-        ValidateUtil.validatePhone(phone);
+        phone = phone.replaceAll("[^0-9]", "");
+        phone = CleanUtil.cleanPhone(phone);
 
         String url = PrepareUrlUtil.prepareUrlByPhone(phone, platformUsername, sandbox, version);
 
@@ -101,8 +100,6 @@ abstract class AbstractClient {
     protected Map<String, Object> getByAddressName(Map<String, String> addressNameData, String platformUsername)
             throws AuthenticationException, HttpException, IOException, ValidateException {
 
-        ValidateUtil.validateAddressName(addressNameData);
-
         String url = PrepareUrlUtil.prepareUrlByAddressName(addressNameData, platformUsername, sandbox, version);
 
         String response = makeHttpRequest.makeRequest(auth, url, null, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT, debug);
@@ -113,7 +110,7 @@ abstract class AbstractClient {
     /**
      * Get fraud level by a phone
      *
-     * @param phone            10 digits phone, str ot int
+     * @param phone            10 digits phone string
      * @param platformUsername Platform username
      * @return map user
      * @throws AuthenticationException
@@ -123,7 +120,7 @@ abstract class AbstractClient {
     protected Map<String, Object> getFraudLevel(String phone, String platformUsername)
             throws AuthenticationException, HttpException, IOException, ValidateException {
 
-        ValidateUtil.validatePhone(phone);
+        phone = CleanUtil.cleanPhone(phone);
 
         String url = PrepareUrlUtil.prepareUrlByFraudLevel(phone, platformUsername, sandbox, version);
 
@@ -145,8 +142,6 @@ abstract class AbstractClient {
      */
     protected boolean updateByProfileId(String profileId, Map<String, Object> newProfile, String platformUsername)
             throws AuthenticationException, HttpException, IOException, ValidateException {
-        ValidateUtil.validateProfileId(profileId);
-        
         String url = PrepareUrlUtil.prepareUrlByProfileId(profileId, platformUsername, sandbox, version);
 
         String userRequest = ParseToObject.userToString(newProfile);

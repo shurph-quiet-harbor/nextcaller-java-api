@@ -5,7 +5,6 @@ import com.nextcaller.integration.exceptions.HttpException;
 import com.nextcaller.integration.exceptions.ValidateException;
 import com.nextcaller.integration.response.ParseToObject;
 import com.nextcaller.integration.util.PrepareUrlUtil;
-import com.nextcaller.integration.util.ValidateUtil;
 
 import java.io.IOException;
 import java.util.Map;
@@ -106,7 +105,7 @@ public class PlatformNextCallerClient extends AbstractClient {
     /**
      * Get profiles by a phone
      *
-     * @param phone            10 digits phone, str ot int
+     * @param phone            10 digits phone
      * @param platformUsername Platform username
      * @return map user
      * @throws AuthenticationException
@@ -135,7 +134,7 @@ public class PlatformNextCallerClient extends AbstractClient {
     /**
      * Get fraud level by a phone
      *
-     * @param phone            10 digits phone, str ot int
+     * @param phone            10 digits phone
      * @param platformUsername Platform username
      * @return map user
      * @throws AuthenticationException
@@ -207,8 +206,6 @@ public class PlatformNextCallerClient extends AbstractClient {
      */
     public Map<String, Object> getPlatformUser(String platformUsername)
             throws AuthenticationException, HttpException, IOException, ValidateException {
-        ValidateUtil.validatePlatformUsername(platformUsername);
-
         String url = PrepareUrlUtil.prepareUrlByPlatformUser(platformUsername, sandbox, version);
 
         String response = makeHttpRequest.makeRequest(auth, url, null, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT, debug);
@@ -225,8 +222,6 @@ public class PlatformNextCallerClient extends AbstractClient {
      */
     public boolean updatePlatformUser(String platformUsername, Map<String, Object> newProfile)
             throws AuthenticationException, HttpException, IOException, ValidateException {
-        ValidateUtil.validatePlatformUsername(platformUsername);
-
         String url = PrepareUrlUtil.prepareUrlByPlatformUser(platformUsername, sandbox, version);
 
         String userRequest = ParseToObject.userToString(newProfile);
