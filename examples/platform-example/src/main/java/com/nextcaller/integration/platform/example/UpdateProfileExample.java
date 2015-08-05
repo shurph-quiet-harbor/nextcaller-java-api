@@ -17,7 +17,7 @@ public class UpdateProfileExample {
     private static final String username = "XXXXX";
     private static final String password = "XXXXX";
     private static final String profileId = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
-    private static final String platformUsername = "XXXXX";
+    private static final String accountId = "XXXXX";
 
     public static void main(String[] args) {
         logger.info("Run update by profile id");
@@ -29,7 +29,7 @@ public class UpdateProfileExample {
             Map<String, Object> data = new HashMap<String, Object>();
             data.put("email", "test@test.com");
 
-            client.updateByProfileId(profileId, data, platformUsername);
+            client.updateByProfileId(profileId, data, accountId);
 
             logger.info("Update user success");
         } catch (HttpException e) {

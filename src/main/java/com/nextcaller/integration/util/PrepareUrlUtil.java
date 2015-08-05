@@ -13,60 +13,48 @@ public class PrepareUrlUtil {
     public static final String SERVER_URL = "https://api.nextcaller.com/v%s/";
     public static final String SANDBOX_URL = "https://api.sandbox.nextcaller.com/v%s/";
 
-    public static String prepareUrlByProfileId(String profileId, String platformUsername, boolean sandbox, String version) {
+    public static String prepareUrlByProfileId(String profileId, boolean sandbox, String version) {
         StringBuffer url = getBaseUrl(sandbox, version);
         Map<String, String> params = new HashMap<String, String>() {{
             put("format", MakeHttpRequest.JSON_FORMAT);
         }};
-        if (platformUsername != null) {
-            params.put("platform_username", platformUsername);
-        }
         url.append("users/").append(profileId).append("/").append(mapToFormEncodedString(params));
         return url.toString();
     }
 
-    public static String prepareUrlByPhone(final String phone, String platformUsername, boolean sandbox, String version) {
+    public static String prepareUrlByPhone(final String phone, boolean sandbox, String version) {
         StringBuffer url = getBaseUrl(sandbox, version);
         Map<String, String> params = new HashMap<String, String>() {{
             put("format", MakeHttpRequest.JSON_FORMAT);
             put("phone", phone);
         }};
-        if (platformUsername != null) {
-            params.put("platform_username", platformUsername);
-        }
         url.append("records/").append(mapToFormEncodedString(params));
         return url.toString();
     }
 
-    public static String prepareUrlByAddressName(Map<String, String> addressNameData, String platformUsername, boolean sandbox, String version) {
+    public static String prepareUrlByAddressName(Map<String, String> addressNameData, boolean sandbox, String version) {
         StringBuffer url = getBaseUrl(sandbox, version);
         addressNameData.put("format", MakeHttpRequest.JSON_FORMAT);
-        if (platformUsername != null) {
-            addressNameData.put("platform_username", platformUsername);
-        }
         url.append("records/").append(mapToFormEncodedString(addressNameData));
         return url.toString();
     }
 
-    public static String prepareUrlByFraudLevel(final String phone, String platformUsername, boolean sandbox, String version) {
+    public static String prepareUrlByFraudLevel(final String phone, boolean sandbox, String version) {
         StringBuffer url = getBaseUrl(sandbox, version);
         Map<String, String> params = new HashMap<String, String>() {{
             put("format", MakeHttpRequest.JSON_FORMAT);
             put("phone", phone);
         }};
-        if (platformUsername != null) {
-            params.put("platform_username", platformUsername);
-        }
         url.append("fraud/").append(mapToFormEncodedString(params));
         return url.toString();
     }
 
-    public static String prepareUrlByPlatformUser(String username, boolean sandbox, String version) {
+    public static String prepareUrlByPlatformAccountId(String accountId, boolean sandbox, String version) {
         StringBuffer url = getBaseUrl(sandbox, version);
         Map<String, String> params = new HashMap<String, String>() {{
             put("format", MakeHttpRequest.JSON_FORMAT);
         }};
-        url.append("platform_users/").append(username).append("/").append(mapToFormEncodedString(params));
+        url.append("accounts/").append(accountId).append("/").append(mapToFormEncodedString(params));
         return url.toString();
     }
 
@@ -76,7 +64,7 @@ public class PrepareUrlUtil {
             put("format", MakeHttpRequest.JSON_FORMAT);
             put("page", Integer.toString(page));
         }};
-        url.append("platform_users/").append(mapToFormEncodedString(params));
+        url.append("accounts/").append(mapToFormEncodedString(params));
         return url.toString();
     }
 

@@ -31,7 +31,7 @@ public class GetProfileByAddressDataExample {
         PlatformNextCallerClient client = builder.setDebugMode().setSandboxMode().build();
 
         try {
-            Map<String, Object> response = client.getByAddressName(addressNameData, platformUsername);
+            Map<String, Object> response = client.getByAddressName(addressNameData, accountId);
             List<Map<String, Object>> records = (List<Map<String, Object>>)response.get("records");
             Map<String, Object> profile = records.get(0);
             

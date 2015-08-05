@@ -17,7 +17,7 @@ public class GetProfileByIdExample {
     private static final String username = "XXXXX";
     private static final String password = "XXXXX";
     private static final String profileId = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
-    private static final String platformUsername = "XXXXX";
+    private static final String accountId = "XXXXX";
 
     public static void main(String[] args) {
         logger.info("Run get by profile id");
@@ -26,7 +26,7 @@ public class GetProfileByIdExample {
         PlatformNextCallerClient client = builder.setDebugMode().setSandboxMode().build();
 
         try {
-            Map<String, Object> profile = client.getByProfileId(profileId, platformUsername);
+            Map<String, Object> profile = client.getByProfileId(profileId, accountId);
 
             System.out.println("first name: " + profile.get("first_name"));
             System.out.println("middle name: " + profile.get("middle_name"));

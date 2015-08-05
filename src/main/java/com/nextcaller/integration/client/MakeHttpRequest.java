@@ -31,6 +31,7 @@ public class MakeHttpRequest {
     private static final String CONTENT_TYPE_HEADER_NAME = "Content-Type";
     private static final String CONTENT_TYPE_APPLICATION_JSON = "application/json";
     private static final String CONTENT_LENGTH_HEADER_NAME = "Content-Length";
+    private static final String PLATFORM_ACCOUNT_HEADER = "Nc-Account-Id";
     
     private static final int DEFAULT_REQUEST_TIMEOUT = 60000; // 60 second
 
@@ -44,6 +45,7 @@ public class MakeHttpRequest {
      * @param auth      http header for Basic authentication
      * @param url       to send the request
      * @param data      the data sended by url
+     * @param accountId identifier of platform account
      * @param method    the HTTP method
      * @param userAgent the name of the source of the request
      * @param debug     boolean (default false)
@@ -51,7 +53,7 @@ public class MakeHttpRequest {
      * @throws AuthenticationException
      * @throws HttpException
      */
-    public String makeRequest(BasicAuth auth, String url, String data, String method, String userAgent,
+    public String makeRequest(BasicAuth auth, String url, String data, String accountId, String method, String userAgent,
                               boolean debug) throws AuthenticationException, HttpException {
 
         URL connectionUrl;
@@ -69,7 +71,7 @@ public class MakeHttpRequest {
                 logger.debug("Request url: " + connectionUrl);
             }
 
-            addConnectionParams(connection, auth, method, userAgent, data);
+            addConnectionParams(connection, auth, method, userAgent, data, accountId);
 
             if (method.equals(POST_METHOD) && debug) {
                 logger.debug("Request body: " + data);
@@ -135,7 +137,7 @@ public class MakeHttpRequest {
     }
 
     private void addConnectionParams(HttpsURLConnection connection, BasicAuth auth, String method, String userAgent,
-                                     String data) throws IOException {
+                                     String data, String accountId) throws IOException {
 
         if (method != null && !method.isEmpty()) {
             connection.setRequestMethod(method);
@@ -145,6 +147,8 @@ public class MakeHttpRequest {
 
         connection.setRequestProperty(AUTHORIZATION_HEADER_NAME, auth.getHeaders());
         connection.setRequestProperty(CONNECTION_HEADER_NAME, CONNECTION_HEADER_VALUE);
+        if (accountId != null)
+            connection.setRequestProperty(PLATFORM_ACCOUNT_HEADER, accountId);
 
         if (userAgent != null && !userAgent.isEmpty()) {
             connection.setRequestProperty(USER_AGENT_HEADER_NAME, userAgent);

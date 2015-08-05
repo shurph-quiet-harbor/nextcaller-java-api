@@ -183,7 +183,7 @@ public class PlatformNextCallerClientTest {
             "                \"201411\": 3" +
             "            }," +
             "            \"created_time\": \"2014-11-13 06:07:19.836404\"," +
-            "            \"resource_uri\": \"/v2/platform_users/test/\"" +
+            "            \"resource_uri\": \"/v2/accounts/test/\"" +
             "        }" +
             "    ]," +
             "   \"page\": 1," +
@@ -211,24 +211,24 @@ public class PlatformNextCallerClientTest {
             "    \"total_calls\": {" +
             "        \"201411\": 3" +
             "    }," +
-            "    \"resource_uri\": \"/v2/platform_users/test/\"" +
+            "    \"resource_uri\": \"/v2/accounts/test/\"" +
             "}";
 
-    private final String PLATFORM_USERNAME_JSON_REQUEST_EXAMPLE =
+    private final String ACCOUNT_ID_JSON_REQUEST_EXAMPLE =
             "{" +
             "    \"first_name\": \"Clark\"," +
             "    \"last_name\": \"Kent\"," +
             "    \"email\": \"test@test.com\"" +
             "}";
 
-    private final String PLATFORM_USERNAME_WRONG_JSON_REQUEST_EXAMPLE =
+    private final String ACCOUNT_ID_WRONG_JSON_REQUEST_EXAMPLE =
             "{" +
             "    \"first_name\": \"Clark\"," +
             "    \"last_name\": \"Kent\"," +
             "    \"email\": \"XXXX\"" +
             "}";
 
-    private final String PLATFORM_USERNAME_WRONG_RESULT =
+    private final String ACCOUNT_ID_WRONG_RESULT =
             "{" +
             "    \"error\": {" +
             "        \"message\": \"Validation Error\"," +
@@ -252,9 +252,9 @@ public class PlatformNextCallerClientTest {
     private Map<String, Object> fraudJsonResultExample;
     private Map<String, Object> platformStatisticsJsonResultExample;
     private Map<String, Object> platformStatisticsUserJsonResultExample;
-    private Map<String, Object> platformUsernameJsonRequestExample;
-    private Map<String, Object> platformUsernameWrongJsonRequestExample;
-    private RestError platformUsernameWrongResult;
+    private Map<String, Object> accountIdJsonRequestExample;
+    private Map<String, Object> accountIdWrongJsonRequestExample;
+    private RestError accountIdWrongResult;
 
     public PlatformNextCallerClientTest() {
         client = mock(PlatformNextCallerClient.class);
@@ -268,9 +268,9 @@ public class PlatformNextCallerClientTest {
             this.fraudJsonResultExample = ParseToObject.responseToMap(FRAUD_JSON_RESULT_EXAMPLE);
             this.platformStatisticsJsonResultExample = ParseToObject.responseToMap(PLATFORM_STATISTICS_JSON_RESULT_EXAMPLE);
             this.platformStatisticsUserJsonResultExample = ParseToObject.responseToMap(PLATFORM_STATISTICS_USER_JSON_RESULT_EXAMPLE);
-            this.platformUsernameJsonRequestExample = ParseToObject.responseToMap(PLATFORM_USERNAME_JSON_REQUEST_EXAMPLE);
-            this.platformUsernameWrongJsonRequestExample = ParseToObject.responseToMap(PLATFORM_USERNAME_WRONG_JSON_REQUEST_EXAMPLE);
-            this.platformUsernameWrongResult = ParseToObject.getError(PLATFORM_USERNAME_WRONG_RESULT);
+            this.accountIdJsonRequestExample = ParseToObject.responseToMap(ACCOUNT_ID_JSON_REQUEST_EXAMPLE);
+            this.accountIdWrongJsonRequestExample = ParseToObject.responseToMap(ACCOUNT_ID_WRONG_JSON_REQUEST_EXAMPLE);
+            this.accountIdWrongResult = ParseToObject.getError(ACCOUNT_ID_WRONG_RESULT);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -279,41 +279,41 @@ public class PlatformNextCallerClientTest {
     @Test(expected = ValidateException.class)
     public void testByShortPhone() throws HttpException, IOException, AuthenticationException, ValidateException {
         String phone = "212555838";
-        String platformUsername = "user";
+        String accountId = "user";
 
-        when(client.getByPhone(phone, platformUsername)).thenThrow(new ValidateException("Invalid phone number: " + phone + ". Phone should has length 10."));
+        when(client.getByPhone(phone, accountId)).thenThrow(new ValidateException("Invalid phone number: " + phone + ". Phone should has length 10."));
 
-        Map<String, Object> response = client.getByPhone(phone, platformUsername);
+        Map<String, Object> response = client.getByPhone(phone, accountId);
     }
 
     @Test(expected = ValidateException.class)
     public void testByWrongPhone() throws HttpException, IOException, AuthenticationException, ValidateException {
         String phone = "XXXXXXXXXX";
-        String platformUsername = "test";
+        String accountId = "test";
 
-        when(client.getByPhone(phone, platformUsername)).thenThrow(new ValidateException("Invalid phone number: " + phone + ". Phone should consists of only digits."));
+        when(client.getByPhone(phone, accountId)).thenThrow(new ValidateException("Invalid phone number: " + phone + ". Phone should consists of only digits."));
 
-        Map<String, Object> response = client.getByPhone(phone, platformUsername);
+        Map<String, Object> response = client.getByPhone(phone, accountId);
     }
 
     @Test(expected = ValidateException.class)
-    public void testGetByPhoneWithoutPlatformUsername() throws HttpException, IOException, AuthenticationException, ValidateException {
+    public void testGetByPhoneWithoutAccountId() throws HttpException, IOException, AuthenticationException, ValidateException {
         String phone = "2125558383";
-        String platformUsername = "";
+        String accountId = "";
 
-        when(client.getByPhone(phone, platformUsername)).thenThrow(new ValidateException("Invalid Platform Username. Platform Username cannot be blank."));
+        when(client.getByPhone(phone, accountId)).thenThrow(new ValidateException("Invalid Platform Account ID. Platform Account ID cannot be blank."));
 
-        Map<String, Object> response = client.getByPhone(phone, platformUsername);
+        Map<String, Object> response = client.getByPhone(phone, accountId);
     }
 
     @Test
-    public void testGetByPhoneWithPlatformUsername() throws HttpException, IOException, AuthenticationException, ValidateException {
+    public void testGetByPhoneWithAccountId() throws HttpException, IOException, AuthenticationException, ValidateException {
         String phone = "2125558383";
-        String platformUsername = "test";
+        String accountId = "test";
 
-        when(client.getByPhone(phone, platformUsername)).thenReturn(phoneJsonResultExample);
+        when(client.getByPhone(phone, accountId)).thenReturn(phoneJsonResultExample);
 
-        Map<String, Object> response = client.getByPhone(phone, platformUsername);
+        Map<String, Object> response = client.getByPhone(phone, accountId);
         Map<String, Object> user = (Map<String, Object>)((List)response.get("records")).get(0);
 
         assertEquals(user.get("email"), "demo@nextcaller.com");
@@ -323,7 +323,7 @@ public class PlatformNextCallerClientTest {
 
     @Test(expected = ValidateException.class)
     public void testByAddressNameWithNotFullDataAddressName() throws HttpException, IOException, AuthenticationException, ValidateException {
-        final String platformUsername = "test";
+        final String accountId = "test";
         final Map<String, String> addressNameData = new HashMap<String, String>(){{
             put("first_name", "Jerry");
             put("last_name", "Seinfeld");
@@ -331,14 +331,14 @@ public class PlatformNextCallerClientTest {
             put("city", "New York");
         }};
 
-        when(client.getByAddressName(addressNameData, platformUsername)).thenThrow(new ValidateException("Either pair of city and state fields or zip_code field should be supplied"));
+        when(client.getByAddressName(addressNameData, accountId)).thenThrow(new ValidateException("Either pair of city and state fields or zip_code field should be supplied"));
 
-        Map<String, Object> response = client.getByAddressName(addressNameData, platformUsername);
+        Map<String, Object> response = client.getByAddressName(addressNameData, accountId);
     }
 
     @Test(expected = ValidateException.class)
     public void testByAddressNameWithWrongZipCode() throws HttpException, IOException, AuthenticationException, ValidateException {
-        final String platformUsername = "test";
+        final String accountId = "test";
         final String zipCode = "1002";
         final Map<String, String> addressNameData = new HashMap<String, String>(){{
             put("first_name", "Jerry");
@@ -348,13 +348,13 @@ public class PlatformNextCallerClientTest {
             put("zip_code", zipCode);
         }};
 
-        when(client.getByAddressName(addressNameData, platformUsername)).thenThrow(new ValidateException(String.format("Invalid zip code: %s", zipCode)));
+        when(client.getByAddressName(addressNameData, accountId)).thenThrow(new ValidateException(String.format("Invalid zip code: %s", zipCode)));
 
-        Map<String, Object> response = client.getByAddressName(addressNameData, platformUsername);
+        Map<String, Object> response = client.getByAddressName(addressNameData, accountId);
     }
 
     @Test(expected = ValidateException.class)
-    public void testByAddressNameWithoutPlatformUsername() throws HttpException, IOException, AuthenticationException, ValidateException {
+    public void testByAddressNameWithoutAccountId() throws HttpException, IOException, AuthenticationException, ValidateException {
         final Map<String, String> addressNameData = new HashMap<String, String>(){{
             put("first_name", "Jerry");
             put("last_name", "Seinfeld");
@@ -362,16 +362,16 @@ public class PlatformNextCallerClientTest {
             put("city", "New York");
             put("zip_code", "10024");
         }};
-        String platformUsername = "";
+        String accountId = "";
 
-        when(client.getByAddressName(addressNameData, platformUsername)).thenThrow(new ValidateException("Invalid Platform Username. Platform Username cannot be blank."));
+        when(client.getByAddressName(addressNameData, accountId)).thenThrow(new ValidateException("Invalid Platform Account ID. Platform Account ID cannot be blank."));
 
-        Map<String, Object> response = client.getByAddressName(addressNameData, platformUsername);
+        Map<String, Object> response = client.getByAddressName(addressNameData, accountId);
     }
 
     @Test
     public void testByAddressData() throws HttpException, IOException, AuthenticationException, ValidateException {
-        final String platformUsername = "test";
+        final String accountId = "test";
         final Map<String, String> addressNameData = new HashMap<String, String>(){{
             put("first_name", "Jerry");
             put("last_name", "Seinfeld");
@@ -380,9 +380,9 @@ public class PlatformNextCallerClientTest {
             put("zip_code", "10024");
         }};
 
-        when(client.getByAddressName(addressNameData, platformUsername)).thenReturn(phoneJsonResultExample);
+        when(client.getByAddressName(addressNameData, accountId)).thenReturn(phoneJsonResultExample);
 
-        Map<String, Object> response = client.getByAddressName(addressNameData, platformUsername);
+        Map<String, Object> response = client.getByAddressName(addressNameData, accountId);
         Map<String, Object> user = (Map<String, Object>)((List)response.get("records")).get(0);
 
         assertEquals(user.get("email"), "demo@nextcaller.com");
@@ -393,21 +393,21 @@ public class PlatformNextCallerClientTest {
     @Test(expected = ValidateException.class)
     public void testByWrongUsernameProfileGetRequest() throws HttpException, IOException, AuthenticationException, ValidateException {
         String profileId = "97d949a413f4ea8b85e9586e1f2d9a";
-        String platformUsername = "";
+        String accountId = "";
 
-        when(client.getByProfileId(profileId, platformUsername)).thenThrow(new ValidateException("Invalid Platform Username. Platform Username cannot be blank."));
+        when(client.getByProfileId(profileId, accountId)).thenThrow(new ValidateException("Invalid Platform Account ID. Platform Account ID cannot be blank."));
 
-        Map<String, Object> response = client.getByProfileId(profileId, platformUsername);
+        Map<String, Object> response = client.getByProfileId(profileId, accountId);
     }
 
     @Test
     public void testProfileGetRequest() throws HttpException, IOException, AuthenticationException, ValidateException {
         String profileId = "97d949a413f4ea8b85e9586e1f2d9a";
-        String platformUsername = "test";
+        String accountId = "test";
 
-        when(client.getByProfileId(profileId, platformUsername)).thenReturn(jsonResultExampleExample);
+        when(client.getByProfileId(profileId, accountId)).thenReturn(jsonResultExampleExample);
 
-        Map<String, Object> response = client.getByProfileId(profileId, platformUsername);
+        Map<String, Object> response = client.getByProfileId(profileId, accountId);
 
         assertEquals(response.get("email"), "demo@nextcaller.com");
         assertEquals(response.get("first_name"), "Jerry");
@@ -417,23 +417,23 @@ public class PlatformNextCallerClientTest {
     @Test
     public void testProfileUpdateRequest() throws HttpException, IOException, AuthenticationException, ValidateException {
         String profileId = "97d949a413f4ea8b85e9586e1f2d9a";
-        String platformUsername = "test";
+        String accountId = "test";
 
-        when(client.updateByProfileId(profileId, requestExample, platformUsername)).thenReturn(true);
+        when(client.updateByProfileId(profileId, requestExample, accountId)).thenReturn(true);
 
-        assertTrue(client.updateByProfileId(profileId, requestExample, platformUsername));
+        assertTrue(client.updateByProfileId(profileId, requestExample, accountId));
     }
 
     @Test
     public void testProfileUpdateWrongRequest() throws HttpException, IOException, AuthenticationException, ValidateException {
         String profileId = "97d949a413f4ea8b85e9586e1f2d9a";
-        String platformUsername = "test";
+        String accountId = "test";
         int statusCode = 400;
 
-        when(client.updateByProfileId(profileId, phoneJsonWrongRequestExample, platformUsername)).thenThrow(new HttpException(phoneJsonWrongResult.getError(), statusCode));
+        when(client.updateByProfileId(profileId, phoneJsonWrongRequestExample, accountId)).thenThrow(new HttpException(phoneJsonWrongResult.getError(), statusCode));
 
         try {
-            client.updateByProfileId(profileId, phoneJsonWrongRequestExample, platformUsername);
+            client.updateByProfileId(profileId, phoneJsonWrongRequestExample, accountId);
             fail( "method didn't throw when I expected it to" );
         } catch (HttpException e) {
             assertEquals(e.getHttpStatusCode(), statusCode);
@@ -444,11 +444,11 @@ public class PlatformNextCallerClientTest {
     @Test
     public void testFraudLevel() throws HttpException, IOException, AuthenticationException, ValidateException {
         String phone = "2125558383";
-        String platformUsername = "test";
+        String accountId = "test";
 
-        when(client.getByPhone(phone, platformUsername)).thenReturn(fraudJsonResultExample);
+        when(client.getByPhone(phone, accountId)).thenReturn(fraudJsonResultExample);
 
-        Map<String, Object> response = client.getByPhone(phone, platformUsername);
+        Map<String, Object> response = client.getByPhone(phone, accountId);
 
         assertEquals(response.get("spoofed"), "unknown");
     }
@@ -481,34 +481,34 @@ public class PlatformNextCallerClientTest {
 
     @Test
     public void testGetUsersStatistics() throws HttpException, IOException, AuthenticationException, ValidateException {
-        String platformUsername = "test";
+        String accountId = "test";
 
-        when(client.getPlatformUser(platformUsername)).thenReturn(platformStatisticsUserJsonResultExample);
+        when(client.getPlatformAccount(accountId)).thenReturn(platformStatisticsUserJsonResultExample);
 
-        Map<String, Object> response = client.getPlatformUser(platformUsername);
+        Map<String, Object> response = client.getPlatformAccount(accountId);
 
         assertEquals(response.get("username"), "test");
         assertEquals(response.get("number_of_operations"), 3);
     }
 
     @Test
-    public void testUpdatePlatformUser() throws HttpException, IOException, AuthenticationException, ValidateException {
-        String platformUsername = "test";
+    public void testUpdatePlatformAccount() throws HttpException, IOException, AuthenticationException, ValidateException {
+        String accountId = "test";
 
-        when(client.updatePlatformUser(platformUsername, platformUsernameJsonRequestExample)).thenReturn(true);
+        when(client.updatePlatformAccount(accountId, accountIdJsonRequestExample)).thenReturn(true);
 
-        assertTrue(client.updatePlatformUser(platformUsername, platformUsernameJsonRequestExample));
+        assertTrue(client.updatePlatformAccount(accountId, accountIdJsonRequestExample));
     }
 
     @Test
-    public void testUpdateWrongPlatformUser() throws HttpException, IOException, AuthenticationException, ValidateException {
-        String platformUsername = "test";
+    public void testUpdateWrongPlatformAccount() throws HttpException, IOException, AuthenticationException, ValidateException {
+        String accountId = "test";
         int statusCode = 400;
 
-        when(client.updatePlatformUser(platformUsername, platformUsernameWrongJsonRequestExample)).thenThrow(new HttpException(platformUsernameWrongResult.getError(), statusCode));
+        when(client.updatePlatformAccount(accountId, accountIdWrongJsonRequestExample)).thenThrow(new HttpException(accountIdWrongResult.getError(), statusCode));
 
         try {
-            client.updatePlatformUser(platformUsername, platformUsernameWrongJsonRequestExample);
+            client.updatePlatformAccount(accountId, accountIdWrongJsonRequestExample);
             fail( "method didn't throw when I expected it to" );
         } catch (HttpException e) {
             assertEquals(e.getHttpStatusCode(), statusCode);

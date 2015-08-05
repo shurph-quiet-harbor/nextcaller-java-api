@@ -90,31 +90,31 @@ public class PlatformNextCallerClient extends AbstractClient {
     /**
      * Get profile by a profile id
      *
-     * @param profileId        Profile identifier
-     * @param platformUsername Platform username
+     * @param profileId profile identifier
+     * @param accountId identifier of platform account
      * @return map user
      * @throws AuthenticationException
      * @throws HttpException
      * @throws IOException
      */
-    public Map<String, Object> getByProfileId(String profileId, String platformUsername)
+    public Map<String, Object> getByProfileId(String profileId, String accountId)
             throws AuthenticationException, HttpException, IOException, ValidateException {
-        return super.getByProfileId(profileId, platformUsername);
+        return super.getByProfileId(profileId, accountId);
     }
 
     /**
      * Get profiles by a phone
      *
      * @param phone            10 digits phone
-     * @param platformUsername Platform username
+     * @param accountId identifier of platform account
      * @return map user
      * @throws AuthenticationException
      * @throws HttpException
      * @throws IOException
      */
-    public Map<String, Object> getByPhone(String phone, String platformUsername)
+    public Map<String, Object> getByPhone(String phone, String accountId)
             throws AuthenticationException, HttpException, IOException, ValidateException {
-        return super.getByPhone(phone, platformUsername);
+        return super.getByPhone(phone, accountId);
     }
 
     /**
@@ -126,40 +126,40 @@ public class PlatformNextCallerClient extends AbstractClient {
      * @throws HttpException
      * @throws IOException
      */
-    public Map<String, Object> getByAddressName(Map<String, String> addressData, String platformUsername)
+    public Map<String, Object> getByAddressName(Map<String, String> addressData, String accountId)
             throws AuthenticationException, HttpException, IOException, ValidateException {
-        return super.getByAddressName(addressData, platformUsername);
+        return super.getByAddressName(addressData, accountId);
     }
 
     /**
      * Get fraud level by a phone
      *
      * @param phone            10 digits phone
-     * @param platformUsername Platform username
+     * @param accountId identifier of platform account
      * @return map user
      * @throws AuthenticationException
      * @throws HttpException
      * @throws IOException
      */
-    public Map<String, Object> getFraudLevel(String phone, String platformUsername)
+    public Map<String, Object> getFraudLevel(String phone, String accountId)
             throws AuthenticationException, HttpException, IOException, ValidateException {
-        return super.getFraudLevel(phone, platformUsername);
+        return super.getFraudLevel(phone, accountId);
     }
 
     /**
      * Update profile by a profile id
      *
-     * @param profileId        Profile identifier
-     * @param newProfile       dictionary with changed data
-     * @param platformUsername Platform username
+     * @param profileId  profile identifier
+     * @param newProfile dictionary with changed data
+     * @param accountId  identifier of platform account
      * @return true if succeeded update, else false
      * @throws AuthenticationException
      * @throws HttpException
      * @throws IOException
      */
-    public boolean updateByProfileId(String profileId, Map<String, Object> newProfile, String platformUsername)
+    public boolean updateByProfileId(String profileId, Map<String, Object> newProfile, String accountId)
             throws AuthenticationException, HttpException, IOException, ValidateException {
-        return super.updateByProfileId(profileId, newProfile, platformUsername);
+        return super.updateByProfileId(profileId, newProfile, accountId);
     }
 
     /**
@@ -176,7 +176,7 @@ public class PlatformNextCallerClient extends AbstractClient {
             throws AuthenticationException, HttpException, IOException, ValidateException {
         String url = PrepareUrlUtil.prepareUrlByPlatformStatistics(page, sandbox, version);
 
-        String response = makeHttpRequest.makeRequest(auth, url, null, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT, debug);
+        String response = makeHttpRequest.makeRequest(auth, url, null, null, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT, debug);
 
         return ParseToObject.responseToMap(response);
     }
@@ -196,19 +196,19 @@ public class PlatformNextCallerClient extends AbstractClient {
     }
 
     /**
-     * Get platform user
+     * Get platform account
      *
-     * @param platformUsername platform username
+     * @param accountId identifier of platform account
      * @return map user
      * @throws AuthenticationException
      * @throws HttpException
      * @throws IOException
      */
-    public Map<String, Object> getPlatformUser(String platformUsername)
+    public Map<String, Object> getPlatformAccount(String accountId)
             throws AuthenticationException, HttpException, IOException, ValidateException {
-        String url = PrepareUrlUtil.prepareUrlByPlatformUser(platformUsername, sandbox, version);
+        String url = PrepareUrlUtil.prepareUrlByPlatformAccountId(accountId, sandbox, version);
 
-        String response = makeHttpRequest.makeRequest(auth, url, null, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT, debug);
+        String response = makeHttpRequest.makeRequest(auth, url, null, null, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT, debug);
 
         return ParseToObject.responseToMap(response);
     }
@@ -220,13 +220,13 @@ public class PlatformNextCallerClient extends AbstractClient {
      * @throws HttpException
      * @throws IOException
      */
-    public boolean updatePlatformUser(String platformUsername, Map<String, Object> newProfile)
+    public boolean updatePlatformAccount(String accountId, Map<String, Object> newProfile)
             throws AuthenticationException, HttpException, IOException, ValidateException {
-        String url = PrepareUrlUtil.prepareUrlByPlatformUser(platformUsername, sandbox, version);
+        String url = PrepareUrlUtil.prepareUrlByPlatformAccountId(accountId, sandbox, version);
 
         String userRequest = ParseToObject.userToString(newProfile);
 
-        String response = makeHttpRequest.makeRequest(auth, url, userRequest, MakeHttpRequest.POST_METHOD, DEFAULT_USER_AGENT, debug);
+        String response = makeHttpRequest.makeRequest(auth, url, userRequest, null, MakeHttpRequest.POST_METHOD, DEFAULT_USER_AGENT, debug);
 
         return Boolean.valueOf(response);
     }

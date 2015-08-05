@@ -11,16 +11,16 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UpdatePlatformUserExample {
+public class UpdatePlatformAccountExample {
 
-    private static final Logger logger = LoggerFactory.getLogger(UpdatePlatformUserExample.class);
+    private static final Logger logger = LoggerFactory.getLogger(UpdatePlatformAccountExample.class);
 
     private static final String username = "XXXXX";
     private static final String password = "XXXXX";
-    private static final String platformUsername = "XXXXX";
+    private static final String accountId = "XXXXX";
 
     public static void main(String[] args) {
-        logger.info("run update platform user");
+        logger.info("run update platform account");
 
         PlatformNextCallerClient.Builder builder = new PlatformNextCallerClient.Builder(username, password);
         PlatformNextCallerClient client = builder.setDebugMode().setSandboxMode().build();
@@ -31,9 +31,9 @@ public class UpdatePlatformUserExample {
             data.put("last_name", "test");
             data.put("email", "test@test.com");
 
-            client.updatePlatformUser(platformUsername, data);
+            client.updatePlatformAccount(accountId, data);
 
-            logger.info("Update user success");
+            logger.info("Update account success");
         } catch (HttpException e) {
             logger.error("HttpException: http status code {}. response code {}. response message: {}.",
                     e.getHttpStatusCode(), e.getErrorMessage().getCode(), e.getErrorMessage().getMessage());

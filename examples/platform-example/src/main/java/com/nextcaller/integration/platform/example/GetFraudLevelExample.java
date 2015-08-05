@@ -18,7 +18,7 @@ public class GetFraudLevelExample {
     private static final String username = "XXXXX";
     private static final String password = "XXXXX";
     private static final String phoneNumber = "1211211212";
-    private static final String platformUsername = "XXXXX";
+    private static final String accountId = "XXXXX";
 
     public static void main(String[] args) {
         logger.info("Run get fraud level");
@@ -27,7 +27,7 @@ public class GetFraudLevelExample {
         PlatformNextCallerClient client = builder.setDebugMode().setSandboxMode().build();
 
         try {
-            Map<String, Object> response = client.getFraudLevel(phoneNumber, platformUsername);
+            Map<String, Object> response = client.getFraudLevel(phoneNumber, accountId);
 
             System.out.println("spoofed: " + response.get("spoofed"));
             System.out.println("fraud_risk: " + response.get("fraud_risk"));

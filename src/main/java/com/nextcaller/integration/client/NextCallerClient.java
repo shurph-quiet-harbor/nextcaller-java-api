@@ -86,7 +86,7 @@ public class NextCallerClient extends AbstractClient {
     /**
      * Get profile by a profile id
      *
-     * @param profileId Profile identifier
+     * @param profileId profile identifier
      * @return map user
      * @throws AuthenticationException
      * @throws HttpException
