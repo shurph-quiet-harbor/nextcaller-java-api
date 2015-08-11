@@ -64,7 +64,7 @@ public class MakeHttpRequest {
         try {
 
             connectionUrl = new URL(url);
-            connection = (HttpsURLConnection) connectionUrl.openConnection();
+            connection = getConnection(connectionUrl);
             connection.setConnectTimeout(DEFAULT_REQUEST_TIMEOUT);
 
             if (debug) {
@@ -134,6 +134,10 @@ public class MakeHttpRequest {
         }
 
         return response;
+    }
+
+    protected HttpsURLConnection getConnection(URL connectionUrl) throws IOException {
+        return (HttpsURLConnection) connectionUrl.openConnection();
     }
 
     private void addConnectionParams(HttpsURLConnection connection, BasicAuth auth, String method, String userAgent,
