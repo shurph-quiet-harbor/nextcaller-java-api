@@ -18,7 +18,7 @@ abstract class AbstractClient {
     public static final String DEFAULT_USER_AGENT = "nextcaller/java/" + VersionProvider.getVersion();
 
     protected static final boolean DEFAULT_SANDBOX = false;
-    public static final String API_VERSION = "2";
+    public static final String API_VERSION = "2.1";
 
     protected final BasicAuth auth;
     protected final MakeHttpRequest makeHttpRequest;
