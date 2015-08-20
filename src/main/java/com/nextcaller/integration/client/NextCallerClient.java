@@ -52,15 +52,15 @@ public class NextCallerClient extends AbstractClient {
     /**
      * Get profiles by a address and name
      *
-     * @param addressData dictionary of address, name data
+     * @param addressNameData dictionary of address, name data
      * @return map user
      * @throws AuthenticationException
      * @throws HttpException
      * @throws IOException
      */
-    public Map<String, Object> getByAddressName(Map<String, String> addressData)
+    public Map<String, Object> getByAddressName(Map<String, String> addressNameData)
             throws AuthenticationException, HttpException, IOException, ValidateException {
-        return super.getByAddressName(addressData, null);
+        return super.getByAddressName(addressNameData, null);
     }
 
     /**
@@ -95,15 +95,15 @@ public class NextCallerClient extends AbstractClient {
      * Update profile by a profile id
      *
      * @param profileId  Profile identifier
-     * @param newProfile dictionary with changed data
+     * @param profileData dictionary with changed data
      * @return true if succeeded update, else false
      * @throws AuthenticationException
      * @throws HttpException
      * @throws IOException
      */
-    public boolean updateByProfileId(String profileId, Map<String, Object> newProfile)
+    public boolean updateByProfileId(String profileId, Map<String, Object> profileData)
             throws AuthenticationException, HttpException, IOException, ValidateException {
-        return super.updateByProfileId(profileId, newProfile, null);
+        return super.updateByProfileId(profileId, profileData, null);
     }
 
     /**

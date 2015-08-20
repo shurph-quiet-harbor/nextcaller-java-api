@@ -28,11 +28,11 @@ public class ParseToObject {
         return map;
     }
 
-    public static String userToString(Map<String, Object> user) throws IOException {
-        StringWriter userWriter = new StringWriter();
-        new ObjectMapper().writeValue(userWriter, user);
-        String result = userWriter.toString();
-        userWriter.close();
+    public static String mapToString(Map<String, Object> map) throws IOException {
+        StringWriter writer = new StringWriter();
+        new ObjectMapper().writeValue(writer, map);
+        String result = writer.toString();
+        writer.close();
 
         return result;
     }

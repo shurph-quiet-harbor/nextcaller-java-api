@@ -146,20 +146,20 @@ abstract class AbstractClient {
      * Update profile by a profile id
      *
      * @param profileId  profile identifier
-     * @param newProfile dictionary with changed data
+     * @param profileData dictionary with changed data
      * @param accountId  identifier of platform account
      * @return true if succeeded update, else false
      * @throws AuthenticationException
      * @throws HttpException
      * @throws IOException
      */
-    protected boolean updateByProfileId(String profileId, Map<String, Object> newProfile, String accountId)
+    protected boolean updateByProfileId(String profileId, Map<String, Object> profileData, String accountId)
             throws AuthenticationException, HttpException, IOException, ValidateException {
         String url = PrepareUrlUtil.prepareUrlByProfileId(profileId, sandbox, API_VERSION);
 
-        String userRequest = ParseToObject.userToString(newProfile);
+        String profileDataString = ParseToObject.mapToString(profileData);
 
-        String response = makeHttpRequest.makeRequest(auth, url, userRequest, accountId, MakeHttpRequest.POST_METHOD, DEFAULT_USER_AGENT);
+        String response = makeHttpRequest.makeRequest(auth, url, profileDataString, accountId, MakeHttpRequest.POST_METHOD, DEFAULT_USER_AGENT);
 
         return Boolean.valueOf(response);
     }

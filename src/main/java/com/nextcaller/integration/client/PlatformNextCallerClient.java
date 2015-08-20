@@ -85,15 +85,15 @@ public class PlatformNextCallerClient extends AbstractClient {
     /**
      * Get profiles by a address and name
      *
-     * @param addressData dictionary of address, name data
+     * @param addressNameData dictionary of address, name data
      * @return map user
      * @throws AuthenticationException
      * @throws HttpException
      * @throws IOException
      */
-    public Map<String, Object> getByAddressName(Map<String, String> addressData, String accountId)
+    public Map<String, Object> getByAddressName(Map<String, String> addressNameData, String accountId)
             throws AuthenticationException, HttpException, IOException, ValidateException {
-        return super.getByAddressName(addressData, accountId);
+        return super.getByAddressName(addressNameData, accountId);
     }
 
     /**
@@ -115,16 +115,16 @@ public class PlatformNextCallerClient extends AbstractClient {
      * Update profile by a profile id
      *
      * @param profileId  profile identifier
-     * @param newProfile dictionary with changed data
+     * @param profileData dictionary with changed data
      * @param accountId  identifier of platform account
      * @return true if succeeded update, else false
      * @throws AuthenticationException
      * @throws HttpException
      * @throws IOException
      */
-    public boolean updateByProfileId(String profileId, Map<String, Object> newProfile, String accountId)
+    public boolean updateByProfileId(String profileId, Map<String, Object> profileData, String accountId)
             throws AuthenticationException, HttpException, IOException, ValidateException {
-        return super.updateByProfileId(profileId, newProfile, accountId);
+        return super.updateByProfileId(profileId, profileData, accountId);
     }
 
     /**
@@ -179,19 +179,19 @@ public class PlatformNextCallerClient extends AbstractClient {
     }
 
     /**
-     * @param newProfile dictionary with changed data
+     * @param accountData dictionary with changed data
      * @return true if succeeded update, else false
      * @throws AuthenticationException
      * @throws HttpException
      * @throws IOException
      */
-    public boolean updatePlatformAccount(String accountId, Map<String, Object> newProfile)
+    public boolean updatePlatformAccount(String accountId, Map<String, Object> accountData)
             throws AuthenticationException, HttpException, IOException, ValidateException {
         String url = PrepareUrlUtil.prepareUrlByPlatformAccountId(accountId, sandbox, API_VERSION);
 
-        String userRequest = ParseToObject.userToString(newProfile);
+        String accountDataString = ParseToObject.mapToString(accountData);
 
-        String response = makeHttpRequest.makeRequest(auth, url, userRequest, null, MakeHttpRequest.POST_METHOD, DEFAULT_USER_AGENT);
+        String response = makeHttpRequest.makeRequest(auth, url, accountDataString, null, MakeHttpRequest.POST_METHOD, DEFAULT_USER_AGENT);
 
         return Boolean.valueOf(response);
     }
