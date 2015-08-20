@@ -21,70 +21,20 @@ public class PlatformNextCallerClient extends AbstractClient {
      *                 Obtain this value from checking the settings page for your application on
      *                 dev.nextcaller.com/profile/api-usage.
      * @param sandbox  Set to true if you want to use the sandbox
-     * @param version  Set API version
-     * @param debug    Set debug output. Default false
      */
-    private PlatformNextCallerClient(
-            final String username, final String password, final boolean sandbox,
-            final String version, final boolean debug) {
-        super(username, password, sandbox, version, debug);
+    public PlatformNextCallerClient(final String username, final String password, final boolean sandbox) {
+        super(username, password, sandbox);
     }
 
-    public static class Builder {
-
-        private String username;
-        private String password;
-        private boolean sandbox;
-        private boolean debug;
-        private String version;
-
-        public Builder(String username, String password) {
-            this.username = username;
-            this.password = password;
-            this.version = DEFAULT_API_VERSION;
-            this.sandbox = DEFAULT_SANDBOX;
-            this.debug = DEFAULT_DEBUG;
-        }
-
-        final public Builder setDebugMode(final boolean debug) {
-            this.debug = debug;
-            return this;
-        }
-
-        final public Builder setDebugMode() {
-            this.debug = true;
-            return this;
-        }
-
-        final public Builder setSandboxMode(final boolean sandbox) {
-            this.sandbox = sandbox;
-            return this;
-        }
-
-        final public Builder setSandboxMode() {
-            this.sandbox = true;
-            return this;
-        }
-
-        final public Builder setVersion(final String version) {
-            this.version = version;
-            return this;
-        }
-
-        final public Builder setVersion(final int version) {
-            this.version = Integer.toString(version);
-            return this;
-        }
-
-        final public Builder setVersion(final double version) {
-            this.version = Double.toString(version);
-            return this;
-        }
-
-        final public PlatformNextCallerClient build() {
-            return new PlatformNextCallerClient(username, password, sandbox, version, debug);
-        }
-
+    /**
+     * @param username The username identifies which application is making the request. Obtain this
+     *                 value from checking the settings page for your application on dev.nextcaller.com/profile/api-usage.
+     * @param password The password identifies which application is making the request.
+     *                 Obtain this value from checking the settings page for your application on
+     *                 dev.nextcaller.com/profile/api-usage.
+     */
+    public PlatformNextCallerClient(final String username, final String password) {
+        super(username, password, DEFAULT_SANDBOX);
     }
 
     /**
@@ -174,9 +124,9 @@ public class PlatformNextCallerClient extends AbstractClient {
      */
     public Map<String, Object> getPlatformStatistics(int page)
             throws AuthenticationException, HttpException, IOException, ValidateException {
-        String url = PrepareUrlUtil.prepareUrlByPlatformStatistics(page, sandbox, version);
+        String url = PrepareUrlUtil.prepareUrlByPlatformStatistics(page, sandbox, API_VERSION);
 
-        String response = makeHttpRequest.makeRequest(auth, url, null, null, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT, debug);
+        String response = makeHttpRequest.makeRequest(auth, url, null, null, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT);
 
         return ParseToObject.responseToMap(response);
     }
@@ -206,9 +156,9 @@ public class PlatformNextCallerClient extends AbstractClient {
      */
     public Map<String, Object> getPlatformAccount(String accountId)
             throws AuthenticationException, HttpException, IOException, ValidateException {
-        String url = PrepareUrlUtil.prepareUrlByPlatformAccountId(accountId, sandbox, version);
+        String url = PrepareUrlUtil.prepareUrlByPlatformAccountId(accountId, sandbox, API_VERSION);
 
-        String response = makeHttpRequest.makeRequest(auth, url, null, null, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT, debug);
+        String response = makeHttpRequest.makeRequest(auth, url, null, null, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT);
 
         return ParseToObject.responseToMap(response);
     }
@@ -222,11 +172,11 @@ public class PlatformNextCallerClient extends AbstractClient {
      */
     public boolean updatePlatformAccount(String accountId, Map<String, Object> newProfile)
             throws AuthenticationException, HttpException, IOException, ValidateException {
-        String url = PrepareUrlUtil.prepareUrlByPlatformAccountId(accountId, sandbox, version);
+        String url = PrepareUrlUtil.prepareUrlByPlatformAccountId(accountId, sandbox, API_VERSION);
 
         String userRequest = ParseToObject.userToString(newProfile);
 
-        String response = makeHttpRequest.makeRequest(auth, url, userRequest, null, MakeHttpRequest.POST_METHOD, DEFAULT_USER_AGENT, debug);
+        String response = makeHttpRequest.makeRequest(auth, url, userRequest, null, MakeHttpRequest.POST_METHOD, DEFAULT_USER_AGENT);
 
         return Boolean.valueOf(response);
     }

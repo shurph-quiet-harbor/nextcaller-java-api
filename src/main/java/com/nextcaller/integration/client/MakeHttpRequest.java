@@ -48,13 +48,12 @@ public class MakeHttpRequest {
      * @param accountId identifier of platform account
      * @param method    the HTTP method
      * @param userAgent the name of the source of the request
-     * @param debug     boolean (default false)
      * @return response
      * @throws AuthenticationException
      * @throws HttpException
      */
-    public String makeRequest(BasicAuth auth, String url, String data, String accountId, String method, String userAgent,
-                              boolean debug) throws AuthenticationException, HttpException {
+    public String makeRequest(BasicAuth auth, String url, String data, String accountId,
+                              String method, String userAgent) throws AuthenticationException, HttpException {
 
         URL connectionUrl;
         HttpsURLConnection connection = null;
@@ -67,15 +66,7 @@ public class MakeHttpRequest {
             connection = getConnection(connectionUrl);
             connection.setConnectTimeout(DEFAULT_REQUEST_TIMEOUT);
 
-            if (debug) {
-                logger.debug("Request url: " + connectionUrl);
-            }
-
             addConnectionParams(connection, auth, method, userAgent, data, accountId);
-
-            if (method.equals(POST_METHOD) && debug) {
-                logger.debug("Request body: " + data);
-            }
 
             int responseCode = connection.getResponseCode();
 
@@ -127,10 +118,6 @@ public class MakeHttpRequest {
             if (connection != null) {
                 connection.disconnect();
             }
-        }
-
-        if (debug) {
-            logger.debug("Response: " + response);
         }
 
         return response;

@@ -17,15 +17,12 @@ abstract class AbstractClient {
 
     public static final String DEFAULT_USER_AGENT = "nextcaller/java/" + VersionProvider.getVersion();
 
-    protected static final boolean DEFAULT_DEBUG = false;
     protected static final boolean DEFAULT_SANDBOX = false;
-    protected static final String DEFAULT_API_VERSION = "2";
+    public static final String API_VERSION = "2";
 
     protected final BasicAuth auth;
     protected final MakeHttpRequest makeHttpRequest;
     protected final boolean sandbox;
-    protected final String version;
-    protected final boolean debug;
 
     /**
      * @param username The username identifies which application is making the request. Obtain this
@@ -34,15 +31,11 @@ abstract class AbstractClient {
      *                 Obtain this value from checking the settings page for your application on
      *                 dev.nextcaller.com/profile/api-usage.
      * @param sandbox  Set to true if you want to use the sandbox
-     * @param version  Set API version
-     * @param debug    Set debug mode. Default false
      */
-    protected AbstractClient(String username, String password, boolean sandbox, String version, boolean debug) {
+    protected AbstractClient(String username, String password, boolean sandbox) {
         this.auth = new BasicAuth(username, password);
         this.makeHttpRequest = new MakeHttpRequest();
         this.sandbox = sandbox;
-        this.version = version;
-        this.debug = debug;
     }
 
     /**
@@ -57,9 +50,9 @@ abstract class AbstractClient {
      */
     protected Map<String, Object> getByProfileId(String profileId, String accountId)
             throws AuthenticationException, HttpException, IOException, ValidateException {
-        String url = PrepareUrlUtil.prepareUrlByProfileId(profileId, sandbox, version);
+        String url = PrepareUrlUtil.prepareUrlByProfileId(profileId, sandbox, API_VERSION);
 
-        String response = makeHttpRequest.makeRequest(auth, url, null, accountId, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT, debug);
+        String response = makeHttpRequest.makeRequest(auth, url, null, accountId, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT);
 
         return ParseToObject.responseToMap(response);
     }
@@ -80,9 +73,9 @@ abstract class AbstractClient {
         phone = phone.replaceAll("[^0-9]", "");
         phone = CleanUtil.cleanPhone(phone);
 
-        String url = PrepareUrlUtil.prepareUrlByPhone(phone, sandbox, version);
+        String url = PrepareUrlUtil.prepareUrlByPhone(phone, sandbox, API_VERSION);
 
-        String response = makeHttpRequest.makeRequest(auth, url, null, accountId, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT, debug);
+        String response = makeHttpRequest.makeRequest(auth, url, null, accountId, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT);
 
         return ParseToObject.responseToMap(response);
     }
@@ -100,9 +93,9 @@ abstract class AbstractClient {
     protected Map<String, Object> getByAddressName(Map<String, String> addressNameData, String accountId)
             throws AuthenticationException, HttpException, IOException, ValidateException {
 
-        String url = PrepareUrlUtil.prepareUrlByAddressName(addressNameData, sandbox, version);
+        String url = PrepareUrlUtil.prepareUrlByAddressName(addressNameData, sandbox, API_VERSION);
 
-        String response = makeHttpRequest.makeRequest(auth, url, null, accountId, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT, debug);
+        String response = makeHttpRequest.makeRequest(auth, url, null, accountId, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT);
 
         return ParseToObject.responseToMap(response);
     }
@@ -122,9 +115,9 @@ abstract class AbstractClient {
 
         phone = CleanUtil.cleanPhone(phone);
 
-        String url = PrepareUrlUtil.prepareUrlByFraudLevel(phone, sandbox, version);
+        String url = PrepareUrlUtil.prepareUrlByFraudLevel(phone, sandbox, API_VERSION);
 
-        String response = makeHttpRequest.makeRequest(auth, url, null, accountId, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT, debug);
+        String response = makeHttpRequest.makeRequest(auth, url, null, accountId, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT);
 
         return ParseToObject.responseToMap(response);
     }
@@ -142,11 +135,11 @@ abstract class AbstractClient {
      */
     protected boolean updateByProfileId(String profileId, Map<String, Object> newProfile, String accountId)
             throws AuthenticationException, HttpException, IOException, ValidateException {
-        String url = PrepareUrlUtil.prepareUrlByProfileId(profileId, sandbox, version);
+        String url = PrepareUrlUtil.prepareUrlByProfileId(profileId, sandbox, API_VERSION);
 
         String userRequest = ParseToObject.userToString(newProfile);
 
-        String response = makeHttpRequest.makeRequest(auth, url, userRequest, accountId, MakeHttpRequest.POST_METHOD, DEFAULT_USER_AGENT, debug);
+        String response = makeHttpRequest.makeRequest(auth, url, userRequest, accountId, MakeHttpRequest.POST_METHOD, DEFAULT_USER_AGENT);
 
         return Boolean.valueOf(response);
     }

@@ -19,8 +19,7 @@ public class NextCallerClientTest extends AbstractClientTest {
 
         super();
 
-        NextCallerClient.Builder builder = new NextCallerClient.Builder(username, password);
-        client = builder.build();
+        client = new NextCallerClient(username, password);
         mockClient(client);
     }
 

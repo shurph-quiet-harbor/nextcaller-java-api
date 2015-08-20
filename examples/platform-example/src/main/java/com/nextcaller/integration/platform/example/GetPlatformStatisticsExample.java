@@ -22,8 +22,7 @@ public class GetPlatformStatisticsExample {
     public static void main(String[] args) {
         logger.info("Run get platform statistics");
 
-        PlatformNextCallerClient.Builder builder = new PlatformNextCallerClient.Builder(username, password);
-        PlatformNextCallerClient client = builder.setDebugMode().setSandboxMode().build();
+        PlatformNextCallerClient client = new PlatformNextCallerClient(username, password);
 
         try {
             Map<String, Object> response = client.getPlatformStatistics(page);

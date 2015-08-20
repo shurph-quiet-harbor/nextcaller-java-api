@@ -22,8 +22,7 @@ public class GetProfileByPhoneExample {
     public static void main(String[] args) {
         logger.info("Run get by phone");
 
-        NextCallerClient.Builder builder = new NextCallerClient.Builder(username, password);
-        NextCallerClient client = builder.setDebugMode().setSandboxMode().build();
+        NextCallerClient client = new NextCallerClient(username, password);
 
         try {
             Map<String, Object> response = client.getByPhone(phoneNumber);

@@ -22,8 +22,7 @@ public class UpdatePlatformAccountExample {
     public static void main(String[] args) {
         logger.info("run update platform account");
 
-        PlatformNextCallerClient.Builder builder = new PlatformNextCallerClient.Builder(username, password);
-        PlatformNextCallerClient client = builder.setDebugMode().setSandboxMode().build();
+        PlatformNextCallerClient client = new PlatformNextCallerClient(username, password);
 
         try {
             Map<String, Object> data = new HashMap<String, Object>();

@@ -19,68 +19,20 @@ public class NextCallerClient extends AbstractClient {
      *                 Obtain this value from checking the settings page for your application on
      *                 dev.nextcaller.com/profile/api-usage.
      * @param sandbox  Set to true if you want to use the sandbox
-     * @param version  Set API version
-     * @param debug    Set debug output. Default false
      */
-    private NextCallerClient(String username, String password, boolean sandbox, String version, boolean debug) {
-        super(username, password, sandbox, version, debug);
+    public NextCallerClient(final String username, final String password, final boolean sandbox) {
+        super(username, password, sandbox);
     }
 
-    public static class Builder {
-
-        private String username;
-        private String password;
-        private boolean sandbox;
-        private boolean debug;
-        private String version;
-
-        public Builder(String username, String password) {
-            this.username = username;
-            this.password = password;
-            this.version = DEFAULT_API_VERSION;
-            this.sandbox = DEFAULT_SANDBOX;
-            this.debug = DEFAULT_DEBUG;
-        }
-
-        final public Builder setDebugMode(final boolean debug) {
-            this.debug = debug;
-            return this;
-        }
-
-        final public Builder setDebugMode() {
-            this.debug = true;
-            return this;
-        }
-
-        final public Builder setSandboxMode(final boolean sandbox) {
-            this.sandbox = sandbox;
-            return this;
-        }
-
-        final public Builder setSandboxMode() {
-            this.sandbox = true;
-            return this;
-        }
-
-        final public Builder setVersion(final String version) {
-            this.version = version;
-            return this;
-        }
-
-        final public Builder setVersion(final int version) {
-            this.version = Integer.toString(version);
-            return this;
-        }
-
-        final public Builder setVersion(final double version) {
-            this.version = Double.toString(version);
-            return this;
-        }
-
-        final public NextCallerClient build() {
-            return new NextCallerClient(username, password, sandbox, version, debug);
-        }
-
+    /**
+     * @param username The username identifies which application is making the request. Obtain this
+     *                 value from checking the settings page for your application on dev.nextcaller.com/profile/api-usage.
+     * @param password The password identifies which application is making the request.
+     *                 Obtain this value from checking the settings page for your application on
+     *                 dev.nextcaller.com/profile/api-usage.
+     */
+    public NextCallerClient(final String username, final String password) {
+        super(username, password, DEFAULT_SANDBOX);
     }
 
     /**

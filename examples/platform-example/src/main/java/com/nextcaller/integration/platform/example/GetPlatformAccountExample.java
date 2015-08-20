@@ -21,8 +21,7 @@ public class GetPlatformAccountExample {
     public static void main(String[] args) {
         logger.info("run get platform account");
 
-        PlatformNextCallerClient.Builder builder = new PlatformNextCallerClient.Builder(username, password);
-        PlatformNextCallerClient client = builder.setDebugMode().setSandboxMode().build();
+        PlatformNextCallerClient client = new PlatformNextCallerClient(username, password);
 
         try {
             Map<String, Object> account = client.getPlatformAccount(accountId);

@@ -22,8 +22,7 @@ public class UpdateProfileExample {
     public static void main(String[] args) {
         logger.info("Run update by profile id");
 
-        PlatformNextCallerClient.Builder builder = new PlatformNextCallerClient.Builder(username, password);
-        PlatformNextCallerClient client = builder.setDebugMode().setSandboxMode().build();
+        PlatformNextCallerClient client = new PlatformNextCallerClient(username, password);
 
         try {
             Map<String, Object> data = new HashMap<String, Object>();

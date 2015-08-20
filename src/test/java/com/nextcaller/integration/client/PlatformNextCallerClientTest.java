@@ -103,8 +103,7 @@ public class PlatformNextCallerClientTest extends AbstractClientTest {
 
         super();
 
-        PlatformNextCallerClient.Builder builder = new PlatformNextCallerClient.Builder(username, password);
-        client = builder.build();
+        client = new PlatformNextCallerClient(username, password);
         mockClient(client);
 
         try {

@@ -22,8 +22,7 @@ public class GetProfileByIdExample {
     public static void main(String[] args) {
         logger.info("Run get by profile id");
 
-        PlatformNextCallerClient.Builder builder = new PlatformNextCallerClient.Builder(username, password);
-        PlatformNextCallerClient client = builder.setDebugMode().setSandboxMode().build();
+        PlatformNextCallerClient client = new PlatformNextCallerClient(username, password);
 
         try {
             Map<String, Object> profile = client.getByProfileId(profileId, accountId);

@@ -28,8 +28,7 @@ public class GetProfileByAddressDataExample {
     public static void main(String[] args) {
         logger.info("Run get by address and name");
 
-        NextCallerClient.Builder builder = new NextCallerClient.Builder(username, password);
-        NextCallerClient client = builder.setDebugMode().setSandboxMode().build();
+        NextCallerClient client = new NextCallerClient(username, password);
 
         try {
             Map<String, Object> response = client.getByAddressName(addressNameData);
