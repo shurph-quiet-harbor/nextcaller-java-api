@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,7 @@ public class GetProfileByAddressDataExample {
         put("address", "129 West 81st Street");
         put("zip_code", "10024");
     }};
+    private static final String accountId = "test";
 
     public static void main(String[] args) {
         logger.info("Run get by address and name");
