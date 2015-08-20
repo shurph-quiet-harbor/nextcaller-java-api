@@ -68,6 +68,21 @@ public class PlatformNextCallerClient extends AbstractClient {
     }
 
     /**
+     * Get profiles by a email
+     *
+     * @param email     email
+     * @param accountId identifier of platform account
+     * @return map user
+     * @throws AuthenticationException
+     * @throws HttpException
+     * @throws IOException
+     */
+    public Map<String, Object> getByEmail(String email, String accountId)
+            throws AuthenticationException, HttpException, IOException {
+        return super.getByEmail(email, accountId);
+    }
+
+    /**
      * Get profiles by a address and name
      *
      * @param addressData dictionary of address, name data

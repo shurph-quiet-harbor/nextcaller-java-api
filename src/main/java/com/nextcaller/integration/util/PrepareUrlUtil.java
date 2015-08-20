@@ -32,6 +32,16 @@ public class PrepareUrlUtil {
         return url.toString();
     }
 
+    public static String prepareUrlByEmail(final String email, boolean sandbox, String version) {
+        StringBuffer url = getBaseUrl(sandbox, version);
+        Map<String, String> params = new HashMap<String, String>() {{
+            put("format", MakeHttpRequest.JSON_FORMAT);
+            put("email", email);
+        }};
+        url.append("records/").append(mapToFormEncodedString(params));
+        return url.toString();
+    }
+
     public static String prepareUrlByAddressName(Map<String, String> addressNameData, boolean sandbox, String version) {
         StringBuffer url = getBaseUrl(sandbox, version);
         addressNameData.put("format", MakeHttpRequest.JSON_FORMAT);

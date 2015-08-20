@@ -78,6 +78,20 @@ public class NextCallerClient extends AbstractClient {
     }
 
     /**
+     * Get profiles by a email
+     *
+     * @param email email
+     * @return map user
+     * @throws AuthenticationException
+     * @throws HttpException
+     * @throws IOException
+     */
+    public Map<String, Object> getByEmail(String email)
+            throws AuthenticationException, HttpException, IOException {
+        return super.getByEmail(email, null);
+    }
+
+    /**
      * Update profile by a profile id
      *
      * @param profileId  Profile identifier

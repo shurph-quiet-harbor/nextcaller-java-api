@@ -81,6 +81,26 @@ abstract class AbstractClient {
     }
 
     /**
+     * Get profiles by a email
+     *
+     * @param email     email
+     * @param accountId identifier of platform account
+     * @return map user
+     * @throws AuthenticationException
+     * @throws HttpException
+     * @throws IOException
+     */
+    protected Map<String, Object> getByEmail(String email, String accountId)
+            throws AuthenticationException, HttpException, IOException {
+
+        String url = PrepareUrlUtil.prepareUrlByEmail(email, sandbox, API_VERSION);
+
+        String response = makeHttpRequest.makeRequest(auth, url, null, accountId, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT);
+
+        return ParseToObject.responseToMap(response);
+    }
+
+    /**
      * Get profiles by a phone
      *
      * @param addressNameData  dictionary with address data
