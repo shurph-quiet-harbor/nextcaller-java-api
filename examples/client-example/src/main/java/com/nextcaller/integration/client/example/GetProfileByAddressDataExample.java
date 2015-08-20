@@ -16,8 +16,8 @@ public class GetProfileByAddressDataExample {
 
     private static final Logger logger = LoggerFactory.getLogger(GetProfileByAddressDataExample.class);
 
-    private static final String username = "XXXXX";
-    private static final String password = "XXXXX";
+    private static final String username = "<api username>";
+    private static final String password = "<api password>";
     private static final Map<String, String> addressNameData = new HashMap<String, String>(){{
         put("first_name", "Jerry");
         put("last_name", "Seinfeld");

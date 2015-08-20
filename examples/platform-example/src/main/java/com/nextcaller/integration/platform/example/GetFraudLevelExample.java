@@ -15,10 +15,10 @@ public class GetFraudLevelExample {
 
     private static final Logger logger = LoggerFactory.getLogger(GetFraudLevelExample.class);
 
-    private static final String username = "XXXXX";
-    private static final String password = "XXXXX";
-    private static final String phoneNumber = "1211211212";
-    private static final String accountId = "XXXXX";
+    private static final String username = "<api username>";
+    private static final String password = "<api password>";
+    private static final String phoneNumber = "2125558383";
+    private static final String accountId = "test";
 
     public static void main(String[] args) {
         logger.info("Run get fraud level");

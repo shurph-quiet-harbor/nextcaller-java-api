@@ -14,9 +14,9 @@ public class GetPlatformAccountExample {
 
     private static final Logger logger = LoggerFactory.getLogger(GetPlatformAccountExample.class);
 
-    private static final String username = "XXXXX";
-    private static final String password = "XXXXX";
-    private static final String accountId = "XXXXX";
+    private static final String username = "<api username>";
+    private static final String password = "<api password>";
+    private static final String accountId = "test";
 
     public static void main(String[] args) {
         logger.info("run get platform account");
