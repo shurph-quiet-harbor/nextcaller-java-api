@@ -1,15 +1,13 @@
 package com.nextcaller.integration.exceptions;
 
 import com.nextcaller.integration.response.ErrorMessage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class AuthenticationException extends Exception {
+public class AuthenticationException extends NcException {
 
     private ErrorMessage errorMessage;
 
     public AuthenticationException(ErrorMessage err) {
-        super("AuthenticationException(" + err.getCode() + ") : " + err.getMessage());
+        super(String.format("%s(%d)", AuthenticationException.class.getSimpleName(), err.getCode()), err.getMessage());
 
         this.errorMessage = err;
     }
@@ -17,5 +15,4 @@ public class AuthenticationException extends Exception {
     public ErrorMessage getErrorMessage() {
         return errorMessage;
     }
-
 }

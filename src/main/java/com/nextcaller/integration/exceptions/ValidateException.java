@@ -1,12 +1,8 @@
 package com.nextcaller.integration.exceptions;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public class ValidateException extends Exception {
+public class ValidateException extends NcException {
 
     public ValidateException(String message) {
-        super("ValidateException : " + message);
+        super(ValidateException.class.getSimpleName(), message);
     }
-
 }
