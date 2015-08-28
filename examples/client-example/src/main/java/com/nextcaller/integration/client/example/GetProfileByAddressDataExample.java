@@ -3,6 +3,7 @@ package com.nextcaller.integration.client.example;
 import com.nextcaller.integration.client.NextCallerClient;
 import com.nextcaller.integration.exceptions.AuthenticationException;
 import com.nextcaller.integration.exceptions.HttpException;
+import com.nextcaller.integration.exceptions.RateLimitException;
 import com.nextcaller.integration.exceptions.ValidateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +48,8 @@ public class GetProfileByAddressDataExample {
             logger.error("ValidateException: {}", e.getMessage());
         } catch (AuthenticationException e) {
             logger.error("AuthenticationException({}): {}", e.getErrorMessage().getCode(), e.getErrorMessage().getMessage());
+        } catch (RateLimitException e) {
+            logger.error("RateLimitException: rate limit - {}, reset time - {}", e.getRateLimit(), e.getResetTime());
         } catch (IOException e) {
             logger.error("IOException: {}", e.getMessage());
         }

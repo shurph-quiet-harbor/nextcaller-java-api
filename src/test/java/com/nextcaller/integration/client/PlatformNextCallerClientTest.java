@@ -2,6 +2,7 @@ package com.nextcaller.integration.client;
 
 import com.nextcaller.integration.exceptions.AuthenticationException;
 import com.nextcaller.integration.exceptions.HttpException;
+import com.nextcaller.integration.exceptions.RateLimitException;
 import com.nextcaller.integration.exceptions.ValidateException;
 import com.nextcaller.integration.response.ParseToObject;
 import org.junit.Test;
@@ -116,102 +117,122 @@ public class PlatformNextCallerClientTest extends AbstractClientTest {
 
     @Override
     public Map<String, Object> getByPhone(String phone)
-            throws HttpException, IOException, AuthenticationException, ValidateException {
+            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
         return client.getByPhone(phone, accountId);
     }
 
     @Override
     public Map<String, Object> getByAddressName(Map<String, String> addressNameData)
-            throws HttpException, IOException, AuthenticationException, ValidateException {
+            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
         return client.getByAddressName(addressNameData, accountId);
     }
 
     @Override
     public Map<String, Object> getByProfileId(String profileId)
-            throws HttpException, IOException, AuthenticationException, ValidateException {
+            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
         return client.getByProfileId(profileId, accountId);
     }
 
     @Override
     public Boolean updateByProfileId(String profileId, Map<String, Object> newProfile)
-            throws HttpException, IOException, AuthenticationException, ValidateException {
+            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
         return client.updateByProfileId(profileId, newProfile, accountId);
     }
 
     @Test
-    public void testGetByPhoneWithAccountId() throws HttpException, IOException, AuthenticationException, ValidateException {
+    public void testGetByPhoneWithAccountId()
+            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
         accountId = "test";
         super.testGetByPhone();
     }
 
     @Test
-    public void testGetByPhoneWithoutAccountId() throws HttpException, IOException, AuthenticationException, ValidateException {
+    public void testGetByPhoneWithoutAccountId()
+            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
         accountId = "";
         super.testGetByPhone();
     }
 
     @Test(expected = HttpException.class)
-    public void testByShortPhoneWithAccountId() throws HttpException, IOException, AuthenticationException, ValidateException {
+    public void testByShortPhoneWithAccountId()
+            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
         accountId = "test";
         super.testByShortPhone();
     }
 
     @Test(expected = HttpException.class)
-    public void testByAddressNameWithNotFullDataAddressNameWithAccountId() throws HttpException, IOException, AuthenticationException, ValidateException {
+    public void testByAddressNameWithNotFullDataAddressNameWithAccountId()
+            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
         accountId = "test";
         super.testByAddressNameWithNotFullDataAddressName();
     }
 
+    @Test(expected = RateLimitException.class)
+    public void testRateLimitWithAccountId()
+            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
+        accountId = "test";
+        super.testRateLimit();
+    }
+
     @Test
-    public void testGetByAddressNameWithAccountId() throws HttpException, IOException, AuthenticationException, ValidateException {
+    public void testGetByAddressNameWithAccountId()
+            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
         accountId = "test";
         super.testGetByAddressName();
     }
 
     @Test
-    public void testGetByAddressNameWithoutAccountId() throws HttpException, IOException, AuthenticationException, ValidateException {
+    public void testGetByAddressNameWithoutAccountId()
+            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
         accountId = "";
         super.testGetByAddressName();
     }
 
     @Test
-    public void testGetByProfileIdWithAccountId() throws HttpException, IOException, AuthenticationException, ValidateException {
+    public void testGetByProfileIdWithAccountId()
+            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
         accountId = "test";
         super.testGetByProfileId();
     }
 
     @Test
-    public void testGetByProfileIdWithoutAccountId() throws HttpException, IOException, AuthenticationException, ValidateException {
+    public void testGetByProfileIdWithoutAccountId()
+            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
         accountId = "";
         super.testGetByProfileId();
     }
 
     @Test
-    public void testUpdateByProfileIdWithAccountId() throws HttpException, IOException, AuthenticationException, ValidateException {
+    public void testUpdateByProfileIdWithAccountId()
+            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
         accountId = "test";
         super.testUpdateByProfileId();
     }
 
     @Test
-    public void testProfileUpdateWrongRequestWithAccountId() throws HttpException, IOException, AuthenticationException, ValidateException {
+    public void testProfileUpdateWrongRequestWithAccountId()
+            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
         accountId = "test";
         super.testProfileUpdateWrongRequest();
     }
 
     @Test
-    public void testFraudLevelWithAccountId() throws HttpException, IOException, AuthenticationException, ValidateException {
+    public void testFraudLevelWithAccountId()
+            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
         accountId = "test";
         super.testFraudLevel();
     }
 
     @Test
-    public void testFraudLevelWithoutAccountId() throws HttpException, IOException, AuthenticationException, ValidateException {
+    public void testFraudLevelWithoutAccountId()
+            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
         accountId = "";
         super.testFraudLevel();
     }
 
     @Test
-    public void testGetAllStatistics() throws HttpException, IOException, AuthenticationException, ValidateException {
+    public void testGetAllStatistics()
+            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
         mockResponse(PLATFORM_STATISTICS_JSON_RESULT_EXAMPLE);
 
         Map<String, Object> response = client.getPlatformStatistics(1);
@@ -224,7 +245,8 @@ public class PlatformNextCallerClientTest extends AbstractClientTest {
     }
 
     @Test
-    public void testGetAllStatisticsWithoutPageParameter() throws HttpException, IOException, AuthenticationException, ValidateException {
+    public void testGetAllStatisticsWithoutPageParameter()
+            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
         mockResponse(PLATFORM_STATISTICS_JSON_RESULT_EXAMPLE);
 
         Map<String, Object> response = client.getPlatformStatistics();
@@ -237,7 +259,8 @@ public class PlatformNextCallerClientTest extends AbstractClientTest {
     }
 
     @Test
-    public void testGetUsersStatistics() throws HttpException, IOException, AuthenticationException, ValidateException {
+    public void testGetUsersStatistics()
+            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
         String accountId = "test";
 
         mockResponse(PLATFORM_STATISTICS_USER_JSON_RESULT_EXAMPLE);
@@ -249,7 +272,8 @@ public class PlatformNextCallerClientTest extends AbstractClientTest {
     }
 
     @Test
-    public void testUpdatePlatformAccount() throws HttpException, IOException, AuthenticationException, ValidateException {
+    public void testUpdatePlatformAccount()
+            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
         String accountId = "test";
 
         mockOkResponse();
@@ -258,7 +282,8 @@ public class PlatformNextCallerClientTest extends AbstractClientTest {
     }
 
     @Test
-    public void testUpdateWrongPlatformAccount() throws HttpException, IOException, AuthenticationException, ValidateException {
+    public void testUpdateWrongPlatformAccount()
+            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
         String accountId = "test";
         int statusCode = 400;
 

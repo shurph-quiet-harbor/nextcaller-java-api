@@ -3,6 +3,8 @@ package com.nextcaller.integration.client;
 import com.nextcaller.integration.auth.BasicAuth;
 import com.nextcaller.integration.exceptions.AuthenticationException;
 import com.nextcaller.integration.exceptions.HttpException;
+import com.nextcaller.integration.exceptions.RateLimitException;
+import com.nextcaller.integration.exceptions.ValidateException;
 import com.nextcaller.integration.response.ParseToObject;
 import com.nextcaller.integration.response.RestError;
 import org.slf4j.Logger;
@@ -24,6 +26,8 @@ public class MakeHttpRequest {
 
     private static final String ERROR_MESSAGE_RESPONSE_OBJECT = "error_message";
 
+    public static final int HTTP_TOO_MANY_REQUESTS = 429;
+
     private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
     private static final String USER_AGENT_HEADER_NAME = "User-Agent";
     private static final String CONNECTION_HEADER_NAME = "Connection";
@@ -32,7 +36,7 @@ public class MakeHttpRequest {
     private static final String CONTENT_TYPE_APPLICATION_JSON = "application/json";
     private static final String CONTENT_LENGTH_HEADER_NAME = "Content-Length";
     private static final String PLATFORM_ACCOUNT_HEADER = "Nc-Account-Id";
-    
+
     private static final int DEFAULT_REQUEST_TIMEOUT = 60000; // 60 second
 
     private static final String MESSAGE_ENCODING = "UTF-8";
@@ -40,6 +44,7 @@ public class MakeHttpRequest {
     private static final String UPDATE_RESPONSE_VALUE = "true";
 
     public static final String JSON_FORMAT = "json";
+
 
     /**
      * @param auth      http header for Basic authentication
@@ -51,9 +56,11 @@ public class MakeHttpRequest {
      * @return response
      * @throws AuthenticationException
      * @throws HttpException
+     * @throws RateLimitException
      */
     public String makeRequest(BasicAuth auth, String url, String data, String accountId,
-                              String method, String userAgent) throws AuthenticationException, HttpException {
+                              String method, String userAgent)
+            throws AuthenticationException, HttpException, ValidateException, RateLimitException {
 
         URL connectionUrl;
         HttpsURLConnection connection = null;
@@ -88,19 +95,23 @@ public class MakeHttpRequest {
                     err = ParseToObject.getError(response);
                 }
 
-                if (responseCode == HttpsURLConnection.HTTP_UNAUTHORIZED) {
-                    throw new AuthenticationException(err.getError());
-                } else if (err != null) {
-                    throw new HttpException(err.getError(), responseCode);
-                } else {
-                    Object error = ParseToObject.responseToMap(response).get(ERROR_MESSAGE_RESPONSE_OBJECT);
-                    String message = null;
-                    if (error != null) {
-                        message = error.toString();
-                    }
-                    throw new HttpException(message, responseCode);
-                }
+                switch (responseCode) {
+                    case HttpsURLConnection.HTTP_UNAUTHORIZED:
+                        throw new AuthenticationException(err.getError());
 
+                    case HTTP_TOO_MANY_REQUESTS:
+                        String message = err.getError().getMessage();
+                        int limit = connection.getHeaderFieldInt("X-Rate-Limit-Limit", -1);
+                        long reset = connection.getHeaderFieldLong("X-Rate-Limit-Reset", -1);
+                        throw new RateLimitException(message, limit, reset);
+
+                    default:
+                        if (err != null)
+                            throw new HttpException(err.getError(), responseCode);
+
+                        Object error = ParseToObject.responseToMap(response).get(ERROR_MESSAGE_RESPONSE_OBJECT);
+                        throw new HttpException(error != null ? error.toString() : null, responseCode);
+                }
             } else {
                 response = getStringRequest(connection, false);
             }

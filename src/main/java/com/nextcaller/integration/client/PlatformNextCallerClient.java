@@ -2,6 +2,7 @@ package com.nextcaller.integration.client;
 
 import com.nextcaller.integration.exceptions.AuthenticationException;
 import com.nextcaller.integration.exceptions.HttpException;
+import com.nextcaller.integration.exceptions.RateLimitException;
 import com.nextcaller.integration.exceptions.ValidateException;
 import com.nextcaller.integration.response.ParseToObject;
 import com.nextcaller.integration.util.PrepareUrlUtil;
@@ -48,7 +49,7 @@ public class PlatformNextCallerClient extends AbstractClient {
      * @throws IOException
      */
     public Map<String, Object> getByProfileId(String profileId, String accountId)
-            throws AuthenticationException, HttpException, IOException, ValidateException {
+            throws AuthenticationException, HttpException, IOException, ValidateException, RateLimitException {
         return super.getByProfileId(profileId, accountId);
     }
 
@@ -63,7 +64,7 @@ public class PlatformNextCallerClient extends AbstractClient {
      * @throws IOException
      */
     public Map<String, Object> getByPhone(String phone, String accountId)
-            throws AuthenticationException, HttpException, IOException, ValidateException {
+            throws AuthenticationException, HttpException, IOException, ValidateException, RateLimitException {
         return super.getByPhone(phone, accountId);
     }
 
@@ -78,7 +79,7 @@ public class PlatformNextCallerClient extends AbstractClient {
      * @throws IOException
      */
     public Map<String, Object> getByEmail(String email, String accountId)
-            throws AuthenticationException, HttpException, IOException {
+            throws AuthenticationException, HttpException, IOException, ValidateException, RateLimitException {
         return super.getByEmail(email, accountId);
     }
 
@@ -92,7 +93,7 @@ public class PlatformNextCallerClient extends AbstractClient {
      * @throws IOException
      */
     public Map<String, Object> getByAddressName(Map<String, String> addressNameData, String accountId)
-            throws AuthenticationException, HttpException, IOException, ValidateException {
+            throws AuthenticationException, HttpException, IOException, ValidateException, RateLimitException {
         return super.getByAddressName(addressNameData, accountId);
     }
 
@@ -107,7 +108,7 @@ public class PlatformNextCallerClient extends AbstractClient {
      * @throws IOException
      */
     public Map<String, Object> getFraudLevel(String phone, String accountId)
-            throws AuthenticationException, HttpException, IOException, ValidateException {
+            throws AuthenticationException, HttpException, IOException, ValidateException, RateLimitException {
         return super.getFraudLevel(phone, accountId);
     }
 
@@ -123,7 +124,7 @@ public class PlatformNextCallerClient extends AbstractClient {
      * @throws IOException
      */
     public boolean updateByProfileId(String profileId, Map<String, Object> profileData, String accountId)
-            throws AuthenticationException, HttpException, IOException, ValidateException {
+            throws AuthenticationException, HttpException, IOException, ValidateException, RateLimitException {
         return super.updateByProfileId(profileId, profileData, accountId);
     }
 
@@ -138,7 +139,7 @@ public class PlatformNextCallerClient extends AbstractClient {
      * @throws ValidateException
      */
     public Map<String, Object> getPlatformStatistics(int page)
-            throws AuthenticationException, HttpException, IOException, ValidateException {
+            throws AuthenticationException, HttpException, IOException, ValidateException, RateLimitException {
         String url = PrepareUrlUtil.prepareUrlByPlatformStatistics(page, sandbox, API_VERSION);
 
         String response = makeHttpRequest.makeRequest(auth, url, null, null, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT);
@@ -156,7 +157,7 @@ public class PlatformNextCallerClient extends AbstractClient {
      * @throws ValidateException
      */
     public Map<String, Object> getPlatformStatistics()
-            throws AuthenticationException, HttpException, IOException, ValidateException {
+            throws AuthenticationException, HttpException, IOException, ValidateException, RateLimitException {
         return getPlatformStatistics(1);
     }
 
@@ -170,7 +171,7 @@ public class PlatformNextCallerClient extends AbstractClient {
      * @throws IOException
      */
     public Map<String, Object> getPlatformAccount(String accountId)
-            throws AuthenticationException, HttpException, IOException, ValidateException {
+            throws AuthenticationException, HttpException, IOException, ValidateException, RateLimitException {
         String url = PrepareUrlUtil.prepareUrlByPlatformAccountId(accountId, sandbox, API_VERSION);
 
         String response = makeHttpRequest.makeRequest(auth, url, null, null, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT);
@@ -186,7 +187,7 @@ public class PlatformNextCallerClient extends AbstractClient {
      * @throws IOException
      */
     public boolean updatePlatformAccount(String accountId, Map<String, Object> accountData)
-            throws AuthenticationException, HttpException, IOException, ValidateException {
+            throws AuthenticationException, HttpException, IOException, ValidateException, RateLimitException {
         String url = PrepareUrlUtil.prepareUrlByPlatformAccountId(accountId, sandbox, API_VERSION);
 
         String accountDataString = ParseToObject.mapToString(accountData);
