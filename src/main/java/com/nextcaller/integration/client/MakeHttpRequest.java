@@ -28,6 +28,7 @@ public class MakeHttpRequest {
 
     public static final int HTTP_UNPROCESSABLE_ENTITY = 422;
     public static final int HTTP_TOO_MANY_REQUESTS = 429;
+    public static final int NC_REQUESTS_PER_SECOND_LIMIT_EXCEEDED_ERROR = 1061;
 
     private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
     private static final String USER_AGENT_HEADER_NAME = "User-Agent";
@@ -104,10 +105,12 @@ public class MakeHttpRequest {
                         throw new ValidationException(err.getError());
 
                     case HTTP_TOO_MANY_REQUESTS:
-                        String message = err.getError().getMessage();
-                        int limit = connection.getHeaderFieldInt("X-Rate-Limit-Limit", -1);
-                        long reset = connection.getHeaderFieldLong("X-Rate-Limit-Reset", -1);
-                        throw new RateLimitException(message, limit, reset);
+                        if (err.getError().getCode() == NC_REQUESTS_PER_SECOND_LIMIT_EXCEEDED_ERROR) {
+                            String message = err.getError().getMessage();
+                            int limit = connection.getHeaderFieldInt("X-Rate-Limit-Limit", -1);
+                            long reset = connection.getHeaderFieldLong("X-Rate-Limit-Reset", -1);
+                            throw new RateLimitException(message, limit, reset);
+                        }
 
                     default:
                         if (err != null)
