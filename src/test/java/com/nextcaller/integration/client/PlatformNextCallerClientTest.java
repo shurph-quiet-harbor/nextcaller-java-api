@@ -160,7 +160,7 @@ public class PlatformNextCallerClientTest extends AbstractClientTest {
         super.testByShortPhone();
     }
 
-    @Test(expected = HttpException.class)
+    @Test(expected = ValidationException.class)
     public void testByAddressNameWithNotFullDataAddressNameWithAccountId()
             throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         accountId = "test";

@@ -60,7 +60,7 @@ public class NextCallerClientTest extends AbstractClientTest {
         super.testByShortPhone();
     }
 
-    @Test(expected = HttpException.class)
+    @Test(expected = ValidationException.class)
     public void testByAddressNameWithNotFullDataAddressName()
             throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         super.testByAddressNameWithNotFullDataAddressName();

@@ -26,6 +26,7 @@ public class MakeHttpRequest {
 
     private static final String ERROR_MESSAGE_RESPONSE_OBJECT = "error_message";
 
+    public static final int HTTP_UNPROCESSABLE_ENTITY = 422;
     public static final int HTTP_TOO_MANY_REQUESTS = 429;
 
     private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
@@ -98,6 +99,9 @@ public class MakeHttpRequest {
                 switch (responseCode) {
                     case HttpsURLConnection.HTTP_UNAUTHORIZED:
                         throw new AuthenticationException(err.getError());
+
+                    case HTTP_UNPROCESSABLE_ENTITY:
+                        throw new ValidationException(err.getError());
 
                     case HTTP_TOO_MANY_REQUESTS:
                         String message = err.getError().getMessage();
