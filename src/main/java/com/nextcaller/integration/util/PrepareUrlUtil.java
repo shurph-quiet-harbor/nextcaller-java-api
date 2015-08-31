@@ -42,10 +42,10 @@ public class PrepareUrlUtil {
         return url.toString();
     }
 
-    public static String prepareUrlByAddressName(Map<String, String> addressNameData, boolean sandbox, String version) {
+    public static String prepareUrlByNameAddress(Map<String, String> nameAddressData, boolean sandbox, String version) {
         StringBuffer url = getBaseUrl(sandbox, version);
-        addressNameData.put("format", MakeHttpRequest.JSON_FORMAT);
-        url.append("records/").append(mapToFormEncodedString(addressNameData));
+        nameAddressData.put("format", MakeHttpRequest.JSON_FORMAT);
+        url.append("records/").append(mapToFormEncodedString(nameAddressData));
         return url.toString();
     }
 

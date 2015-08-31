@@ -122,9 +122,9 @@ public class PlatformNextCallerClientTest extends AbstractClientTest {
     }
 
     @Override
-    public Map<String, Object> getByAddressName(Map<String, String> addressNameData)
+    public Map<String, Object> getByNameAddress(Map<String, String> nameAddressData)
             throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
-        return client.getByAddressName(addressNameData, accountId);
+        return client.getByNameAddress(nameAddressData, accountId);
     }
 
     @Override
@@ -161,10 +161,10 @@ public class PlatformNextCallerClientTest extends AbstractClientTest {
     }
 
     @Test(expected = ValidationException.class)
-    public void testByAddressNameWithNotFullDataAddressNameWithAccountId()
+    public void testByNameAddressWithNotFullDataWithAccountId()
             throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         accountId = "test";
-        super.testByAddressNameWithNotFullDataAddressName();
+        super.testByNameAddressWithNotFullData();
     }
 
     @Test(expected = RateLimitException.class)
@@ -175,17 +175,17 @@ public class PlatformNextCallerClientTest extends AbstractClientTest {
     }
 
     @Test
-    public void testGetByAddressNameWithAccountId()
+    public void testGetByNameAddressWithAccountId()
             throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         accountId = "test";
-        super.testGetByAddressName();
+        super.testGetByNameAddress();
     }
 
     @Test
-    public void testGetByAddressNameWithoutAccountId()
+    public void testGetByNameAddressWithoutAccountId()
             throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         accountId = "";
-        super.testGetByAddressName();
+        super.testGetByNameAddress();
     }
 
     @Test

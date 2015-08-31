@@ -20,7 +20,7 @@ public class GetProfileByAddressDataExample {
 
     private static final String username = "<api username>";
     private static final String password = "<api password>";
-    private static final Map<String, String> addressNameData = new HashMap<String, String>(){{
+    private static final Map<String, String> nameAddressData = new HashMap<String, String>(){{
         put("first_name", "Jerry");
         put("last_name", "Seinfeld");
         put("address", "129 West 81st Street");
@@ -33,7 +33,7 @@ public class GetProfileByAddressDataExample {
         NextCallerClient client = new NextCallerClient(username, password);
 
         try {
-            Map<String, Object> response = client.getByAddressName(addressNameData);
+            Map<String, Object> response = client.getByNameAddress(nameAddressData);
             List<Map<String, Object>> records = (List<Map<String, Object>>)response.get("records");
             Map<String, Object> profile = records.get(0);
             

@@ -31,9 +31,9 @@ public class NextCallerClientTest extends AbstractClientTest {
     }
 
     @Override
-    public Map<String, Object> getByAddressName(Map<String, String> addressNameData)
+    public Map<String, Object> getByNameAddress(Map<String, String> nameAddressData)
             throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
-        return client.getByAddressName(addressNameData);
+        return client.getByNameAddress(nameAddressData);
     }
 
     @Override
@@ -61,9 +61,9 @@ public class NextCallerClientTest extends AbstractClientTest {
     }
 
     @Test(expected = ValidationException.class)
-    public void testByAddressNameWithNotFullDataAddressName()
+    public void testByNameAddressWithNotFullData()
             throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
-        super.testByAddressNameWithNotFullDataAddressName();
+        super.testByNameAddressWithNotFullData();
     }
 
     @Test(expected = RateLimitException.class)
@@ -73,9 +73,9 @@ public class NextCallerClientTest extends AbstractClientTest {
     }
 
     @Test
-    public void testGetByAddressName()
+    public void testGetByNameAddress()
             throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
-        super.testGetByAddressName();
+        super.testGetByNameAddress();
     }
 
     @Test

@@ -283,7 +283,7 @@ public class AbstractClientTest {
         return null;
     }
 
-    public Map<String, Object> getByAddressName(Map<String, String> addressNameData)
+    public Map<String, Object> getByNameAddress(Map<String, String> nameAddressData)
             throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         return null;
     }
@@ -321,9 +321,9 @@ public class AbstractClientTest {
         getByPhone(phone);
     }
 
-    public void testByAddressNameWithNotFullDataAddressName()
+    public void testByNameAddressWithNotFullData()
             throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
-        final Map<String, String> addressNameData = new HashMap<String, String>(){{
+        final Map<String, String> nameAddressData = new HashMap<String, String>(){{
             put("first_name", "Jerry");
             put("last_name", "Seinfeld");
             put("address", "129 West 81st Street");
@@ -332,12 +332,12 @@ public class AbstractClientTest {
 
         mockErrorResponse(422, PROFILE_JSON_VALIDATION_ERROR_RESULT);
 
-        getByAddressName(addressNameData);
+        getByNameAddress(nameAddressData);
     }
 
-    public void testGetByAddressName()
+    public void testGetByNameAddress()
             throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
-        final Map<String, String> addressNameData = new HashMap<String, String>(){{
+        final Map<String, String> nameAddressData = new HashMap<String, String>(){{
             put("first_name", "Jerry");
             put("last_name", "Seinfeld");
             put("address", "129 West 81st Street");
@@ -347,7 +347,7 @@ public class AbstractClientTest {
 
         mockResponse(PHONE_JSON_RESULT_EXAMPLE);
 
-        Map<String, Object> response = getByAddressName(addressNameData);
+        Map<String, Object> response = getByNameAddress(nameAddressData);
         Map<String, Object> user = (Map<String, Object>)((List)response.get("records")).get(0);
 
         assertEquals(user.get("email"), "demo@nextcaller.com");

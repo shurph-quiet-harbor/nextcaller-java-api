@@ -53,15 +53,15 @@ public class NextCallerClient extends AbstractClient {
     /**
      * Get profiles by a address and name
      *
-     * @param addressNameData dictionary of address, name data
+     * @param nameAddressData dictionary of address, name data
      * @return map user
      * @throws AuthenticationException
      * @throws HttpException
      * @throws IOException
      */
-    public Map<String, Object> getByAddressName(Map<String, String> addressNameData)
+    public Map<String, Object> getByNameAddress(Map<String, String> nameAddressData)
             throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
-        return super.getByAddressName(addressNameData, null);
+        return super.getByNameAddress(nameAddressData, null);
     }
 
     /**

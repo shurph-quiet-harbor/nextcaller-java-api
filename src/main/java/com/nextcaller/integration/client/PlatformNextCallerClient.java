@@ -86,15 +86,15 @@ public class PlatformNextCallerClient extends AbstractClient {
     /**
      * Get profiles by a address and name
      *
-     * @param addressNameData dictionary of address, name data
+     * @param nameAddressData dictionary of address, name data
      * @return map user
      * @throws AuthenticationException
      * @throws HttpException
      * @throws IOException
      */
-    public Map<String, Object> getByAddressName(Map<String, String> addressNameData, String accountId)
+    public Map<String, Object> getByNameAddress(Map<String, String> nameAddressData, String accountId)
             throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
-        return super.getByAddressName(addressNameData, accountId);
+        return super.getByNameAddress(nameAddressData, accountId);
     }
 
     /**

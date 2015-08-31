@@ -104,17 +104,17 @@ abstract class AbstractClient {
     /**
      * Get profiles by a phone
      *
-     * @param addressNameData  dictionary with address data
+     * @param nameAddressData  dictionary with address data
      * @param accountId identifier of platform account
      * @return map user
      * @throws AuthenticationException
      * @throws HttpException
      * @throws IOException
      */
-    protected Map<String, Object> getByAddressName(Map<String, String> addressNameData, String accountId)
+    protected Map<String, Object> getByNameAddress(Map<String, String> nameAddressData, String accountId)
             throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
 
-        String url = PrepareUrlUtil.prepareUrlByAddressName(addressNameData, sandbox, API_VERSION);
+        String url = PrepareUrlUtil.prepareUrlByNameAddress(nameAddressData, sandbox, API_VERSION);
 
         String response = makeHttpRequest.makeRequest(auth, url, null, accountId, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT);
 
