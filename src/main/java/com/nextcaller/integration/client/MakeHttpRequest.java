@@ -4,7 +4,7 @@ import com.nextcaller.integration.auth.BasicAuth;
 import com.nextcaller.integration.exceptions.AuthenticationException;
 import com.nextcaller.integration.exceptions.HttpException;
 import com.nextcaller.integration.exceptions.RateLimitException;
-import com.nextcaller.integration.exceptions.ValidateException;
+import com.nextcaller.integration.exceptions.ValidationException;
 import com.nextcaller.integration.response.ParseToObject;
 import com.nextcaller.integration.response.RestError;
 import org.slf4j.Logger;
@@ -60,7 +60,7 @@ public class MakeHttpRequest {
      */
     public String makeRequest(BasicAuth auth, String url, String data, String accountId,
                               String method, String userAgent)
-            throws AuthenticationException, HttpException, ValidateException, RateLimitException {
+            throws AuthenticationException, HttpException, ValidationException, RateLimitException {
 
         URL connectionUrl;
         HttpsURLConnection connection = null;

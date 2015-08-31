@@ -3,7 +3,7 @@ package com.nextcaller.integration.client;
 import com.nextcaller.integration.exceptions.AuthenticationException;
 import com.nextcaller.integration.exceptions.HttpException;
 import com.nextcaller.integration.exceptions.RateLimitException;
-import com.nextcaller.integration.exceptions.ValidateException;
+import com.nextcaller.integration.exceptions.ValidationException;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -26,79 +26,79 @@ public class NextCallerClientTest extends AbstractClientTest {
 
     @Override
     public Map<String, Object> getByPhone(String phone)
-            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
+            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         return client.getByPhone(phone);
     }
 
     @Override
     public Map<String, Object> getByAddressName(Map<String, String> addressNameData)
-            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
+            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         return client.getByAddressName(addressNameData);
     }
 
     @Override
     public Map<String, Object> getByProfileId(String profileId)
-            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
+            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         return client.getByProfileId(profileId);
     }
 
     @Override
     public Boolean updateByProfileId(String profileId, Map<String, Object> newProfile)
-            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
+            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         return client.updateByProfileId(profileId, newProfile);
     }
 
     @Test
     public void testGetByPhone()
-            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
+            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         super.testGetByPhone();
     }
 
     @Test(expected = HttpException.class)
     public void testByShortPhone()
-            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
+            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         super.testByShortPhone();
     }
 
     @Test(expected = HttpException.class)
     public void testByAddressNameWithNotFullDataAddressName()
-            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
+            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         super.testByAddressNameWithNotFullDataAddressName();
     }
 
     @Test(expected = RateLimitException.class)
     public void testRateLimit()
-            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
+            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         super.testRateLimit();
     }
 
     @Test
     public void testGetByAddressName()
-            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
+            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         super.testGetByAddressName();
     }
 
     @Test
     public void testGetByProfileId()
-            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
+            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         super.testGetByProfileId();
     }
 
     @Test
     public void testUpdateByProfileId()
-            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
+            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         super.testUpdateByProfileId();
     }
 
     @Test
     public void testProfileUpdateWrongRequest()
-            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
+            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         super.testProfileUpdateWrongRequest();
     }
 
     @Test
     public void testFraudLevel()
-            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
+            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         super.testFraudLevel();
     }
 }

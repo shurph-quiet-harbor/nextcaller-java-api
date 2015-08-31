@@ -4,7 +4,7 @@ import com.nextcaller.integration.client.NextCallerClient;
 import com.nextcaller.integration.exceptions.AuthenticationException;
 import com.nextcaller.integration.exceptions.HttpException;
 import com.nextcaller.integration.exceptions.RateLimitException;
-import com.nextcaller.integration.exceptions.ValidateException;
+import com.nextcaller.integration.exceptions.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,8 +32,8 @@ public class GetFraudLevelExample {
         } catch (HttpException e) {
             logger.error("HttpException: http status code {}. response code {}. response message: {}.",
                     e.getHttpStatusCode(), e.getErrorMessage().getCode(), e.getErrorMessage().getMessage());
-        } catch (ValidateException e) {
-            logger.error("ValidateException: {}", e.getMessage());
+        } catch (ValidationException e) {
+            logger.error("ValidationException: {}", e.getMessage());
         } catch (AuthenticationException e) {
             logger.error("AuthenticationException({}): {}", e.getErrorMessage().getCode(), e.getErrorMessage().getMessage());
         } catch (RateLimitException e) {

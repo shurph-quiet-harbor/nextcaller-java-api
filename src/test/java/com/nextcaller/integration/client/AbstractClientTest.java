@@ -3,7 +3,7 @@ package com.nextcaller.integration.client;
 import com.nextcaller.integration.exceptions.AuthenticationException;
 import com.nextcaller.integration.exceptions.HttpException;
 import com.nextcaller.integration.exceptions.RateLimitException;
-import com.nextcaller.integration.exceptions.ValidateException;
+import com.nextcaller.integration.exceptions.ValidationException;
 import com.nextcaller.integration.response.ParseToObject;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -279,27 +279,27 @@ public class AbstractClientTest {
     }
 
     public Map<String, Object> getByPhone(String phone)
-            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
+            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         return null;
     }
 
     public Map<String, Object> getByAddressName(Map<String, String> addressNameData)
-            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
+            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         return null;
     }
 
     public Map<String, Object> getByProfileId(String profileId)
-            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
+            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         return null;
     }
 
     public Boolean updateByProfileId(String profileId, Map<String, Object> newProfile)
-            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
+            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         return null;
     }
 
     public void testGetByPhone()
-            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
+            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         String phone = "2125558383";
 
         mockResponse(PHONE_JSON_RESULT_EXAMPLE);
@@ -313,7 +313,7 @@ public class AbstractClientTest {
     }
 
     public void testByShortPhone()
-            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
+            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         String phone = "212555838";
 
         mockErrorResponse(400, PHONE_JSON_WRONG_RESULT);
@@ -322,7 +322,7 @@ public class AbstractClientTest {
     }
 
     public void testByAddressNameWithNotFullDataAddressName()
-            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
+            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         final Map<String, String> addressNameData = new HashMap<String, String>(){{
             put("first_name", "Jerry");
             put("last_name", "Seinfeld");
@@ -336,7 +336,7 @@ public class AbstractClientTest {
     }
 
     public void testGetByAddressName()
-            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
+            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         final Map<String, String> addressNameData = new HashMap<String, String>(){{
             put("first_name", "Jerry");
             put("last_name", "Seinfeld");
@@ -356,7 +356,7 @@ public class AbstractClientTest {
     }
 
     public void testGetByProfileId()
-            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
+            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         String profileId = "97d949a413f4ea8b85e9586e1f2d9a";
 
         mockResponse(PROFILE_JSON_RESULT_EXAMPLE);
@@ -369,7 +369,7 @@ public class AbstractClientTest {
     }
 
     public void testUpdateByProfileId()
-            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
+            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         String profileId = "97d949a413f4ea8b85e9586e1f2d9a";
 
         mockOkResponse();
@@ -378,7 +378,7 @@ public class AbstractClientTest {
     }
 
     public void testProfileUpdateWrongRequest()
-            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
+            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         String profileId = "97d949a413f4ea8b85e9586e1f2d9a";
         int statusCode = 400;
 
@@ -394,7 +394,7 @@ public class AbstractClientTest {
     }
 
     public void testFraudLevel()
-            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
+            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         String phone = "2125558383";
 
         mockResponse(FRAUD_JSON_RESULT_EXAMPLE);
@@ -405,7 +405,7 @@ public class AbstractClientTest {
     }
 
     public void testRateLimit()
-            throws HttpException, IOException, AuthenticationException, ValidateException, RateLimitException {
+            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         String phone = "2125558383";
 
         mockErrorResponse(MakeHttpRequest.HTTP_TOO_MANY_REQUESTS, TOO_MANY_REQUESTS_EXAMPLE);

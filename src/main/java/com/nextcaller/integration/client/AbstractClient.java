@@ -4,7 +4,7 @@ import com.nextcaller.integration.auth.BasicAuth;
 import com.nextcaller.integration.exceptions.AuthenticationException;
 import com.nextcaller.integration.exceptions.HttpException;
 import com.nextcaller.integration.exceptions.RateLimitException;
-import com.nextcaller.integration.exceptions.ValidateException;
+import com.nextcaller.integration.exceptions.ValidationException;
 import com.nextcaller.integration.response.ParseToObject;
 import com.nextcaller.integration.util.CleanUtil;
 import com.nextcaller.integration.util.PrepareUrlUtil;
@@ -50,7 +50,7 @@ abstract class AbstractClient {
      * @throws IOException
      */
     protected Map<String, Object> getByProfileId(String profileId, String accountId)
-            throws AuthenticationException, HttpException, IOException, ValidateException, RateLimitException {
+            throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
         String url = PrepareUrlUtil.prepareUrlByProfileId(profileId, sandbox, API_VERSION);
 
         String response = makeHttpRequest.makeRequest(auth, url, null, accountId, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT);
@@ -69,7 +69,7 @@ abstract class AbstractClient {
      * @throws IOException
      */
     protected Map<String, Object> getByPhone(String phone, String accountId)
-            throws AuthenticationException, HttpException, IOException, ValidateException, RateLimitException {
+            throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
 
         phone = phone.replaceAll("[^0-9]", "");
         phone = CleanUtil.cleanPhone(phone);
@@ -92,7 +92,7 @@ abstract class AbstractClient {
      * @throws IOException
      */
     protected Map<String, Object> getByEmail(String email, String accountId)
-            throws AuthenticationException, HttpException, IOException, ValidateException, RateLimitException {
+            throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
 
         String url = PrepareUrlUtil.prepareUrlByEmail(email, sandbox, API_VERSION);
 
@@ -112,7 +112,7 @@ abstract class AbstractClient {
      * @throws IOException
      */
     protected Map<String, Object> getByAddressName(Map<String, String> addressNameData, String accountId)
-            throws AuthenticationException, HttpException, IOException, ValidateException, RateLimitException {
+            throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
 
         String url = PrepareUrlUtil.prepareUrlByAddressName(addressNameData, sandbox, API_VERSION);
 
@@ -132,7 +132,7 @@ abstract class AbstractClient {
      * @throws IOException
      */
     protected Map<String, Object> getFraudLevel(String phone, String accountId)
-            throws AuthenticationException, HttpException, IOException, ValidateException, RateLimitException {
+            throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
 
         phone = CleanUtil.cleanPhone(phone);
 
@@ -155,7 +155,7 @@ abstract class AbstractClient {
      * @throws IOException
      */
     protected boolean updateByProfileId(String profileId, Map<String, Object> profileData, String accountId)
-            throws AuthenticationException, HttpException, IOException, ValidateException, RateLimitException {
+            throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
         String url = PrepareUrlUtil.prepareUrlByProfileId(profileId, sandbox, API_VERSION);
 
         String profileDataString = ParseToObject.mapToString(profileData);

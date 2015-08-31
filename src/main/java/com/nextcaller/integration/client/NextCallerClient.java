@@ -3,7 +3,7 @@ package com.nextcaller.integration.client;
 import com.nextcaller.integration.exceptions.AuthenticationException;
 import com.nextcaller.integration.exceptions.HttpException;
 import com.nextcaller.integration.exceptions.RateLimitException;
-import com.nextcaller.integration.exceptions.ValidateException;
+import com.nextcaller.integration.exceptions.ValidationException;
 
 import java.io.IOException;
 import java.util.Map;
@@ -46,7 +46,7 @@ public class NextCallerClient extends AbstractClient {
      * @throws IOException
      */
     public Map<String, Object> getByProfileId(String profileId)
-            throws AuthenticationException, HttpException, IOException, ValidateException, RateLimitException {
+            throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
         return super.getByProfileId(profileId, null);
     }
 
@@ -60,7 +60,7 @@ public class NextCallerClient extends AbstractClient {
      * @throws IOException
      */
     public Map<String, Object> getByAddressName(Map<String, String> addressNameData)
-            throws AuthenticationException, HttpException, IOException, ValidateException, RateLimitException {
+            throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
         return super.getByAddressName(addressNameData, null);
     }
 
@@ -74,7 +74,7 @@ public class NextCallerClient extends AbstractClient {
      * @throws IOException
      */
     public Map<String, Object> getByPhone(String phone)
-            throws AuthenticationException, HttpException, IOException, ValidateException, RateLimitException {
+            throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
         return super.getByPhone(phone, null);
     }
 
@@ -88,7 +88,7 @@ public class NextCallerClient extends AbstractClient {
      * @throws IOException
      */
     public Map<String, Object> getByEmail(String email)
-            throws AuthenticationException, HttpException, IOException, ValidateException, RateLimitException {
+            throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
         return super.getByEmail(email, null);
     }
 
@@ -103,7 +103,7 @@ public class NextCallerClient extends AbstractClient {
      * @throws IOException
      */
     public boolean updateByProfileId(String profileId, Map<String, Object> profileData)
-            throws AuthenticationException, HttpException, IOException, ValidateException, RateLimitException {
+            throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
         return super.updateByProfileId(profileId, profileData, null);
     }
 
@@ -117,7 +117,7 @@ public class NextCallerClient extends AbstractClient {
      * @throws IOException
      */
     public Map<String, Object> getFraudLevel(String phone)
-            throws AuthenticationException, HttpException, IOException, ValidateException, RateLimitException {
+            throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
         return getFraudLevel(phone, null);
     }
 
