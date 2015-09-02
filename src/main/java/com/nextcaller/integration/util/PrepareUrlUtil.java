@@ -64,7 +64,10 @@ public class PrepareUrlUtil {
         Map<String, String> params = new HashMap<String, String>() {{
             put("format", MakeHttpRequest.JSON_FORMAT);
         }};
-        url.append("accounts/").append(accountId).append("/").append(mapToFormEncodedString(params));
+        url.append("accounts/");
+        if (accountId != null)
+            url.append(accountId).append("/");
+        url.append(mapToFormEncodedString(params));
         return url.toString();
     }
 

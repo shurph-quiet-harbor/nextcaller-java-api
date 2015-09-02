@@ -23,6 +23,7 @@ public class MakeHttpRequest {
 
     public static final String GET_METHOD = "GET";
     public static final String POST_METHOD = "POST";
+    public static final String PUT_METHOD = "PUT";
 
     private static final String ERROR_MESSAGE_RESPONSE_OBJECT = "error_message";
 
@@ -123,7 +124,7 @@ public class MakeHttpRequest {
                 response = getStringRequest(connection, false);
             }
 
-            if (method.equals(POST_METHOD) && (responseCode == HttpsURLConnection.HTTP_NO_CONTENT
+            if ((method.equals(POST_METHOD) || method.equals(PUT_METHOD)) && (responseCode == HttpsURLConnection.HTTP_NO_CONTENT
                     || responseCode == HttpsURLConnection.HTTP_OK)) {
                 response = UPDATE_RESPONSE_VALUE;
             }

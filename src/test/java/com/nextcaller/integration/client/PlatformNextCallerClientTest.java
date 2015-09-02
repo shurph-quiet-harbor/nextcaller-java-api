@@ -65,6 +65,7 @@ public class PlatformNextCallerClientTest extends AbstractClientTest {
 
     private final String ACCOUNT_ID_JSON_REQUEST_EXAMPLE =
             "{" +
+            "    \"id\": \"test\"," +
             "    \"first_name\": \"Clark\"," +
             "    \"last_name\": \"Kent\"," +
             "    \"email\": \"test@test.com\"" +
@@ -269,6 +270,14 @@ public class PlatformNextCallerClientTest extends AbstractClientTest {
 
         assertEquals(response.get("username"), "test");
         assertEquals(response.get("number_of_operations"), 3);
+    }
+
+    @Test
+    public void testCreatePlatformAccount()
+            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
+        mockOkResponse();
+
+        assertTrue(client.createPlatformAccount(accountIdJsonRequestExample));
     }
 
     @Test

@@ -180,6 +180,24 @@ public class PlatformNextCallerClient extends AbstractClient {
     }
 
     /**
+     * @param accountData dictionary with account's data
+     * @return true if succeeded update, else false
+     * @throws AuthenticationException
+     * @throws HttpException
+     * @throws IOException
+     */
+    public boolean createPlatformAccount(Map<String, Object> accountData)
+            throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
+        String url = PrepareUrlUtil.prepareUrlByPlatformAccountId(null, sandbox, API_VERSION);
+
+        String accountDataString = ParseToObject.mapToString(accountData);
+
+        String response = makeHttpRequest.makeRequest(auth, url, accountDataString, null, MakeHttpRequest.POST_METHOD, DEFAULT_USER_AGENT);
+
+        return Boolean.valueOf(response);
+    }
+
+    /**
      * @param accountData dictionary with changed data
      * @return true if succeeded update, else false
      * @throws AuthenticationException
@@ -192,7 +210,7 @@ public class PlatformNextCallerClient extends AbstractClient {
 
         String accountDataString = ParseToObject.mapToString(accountData);
 
-        String response = makeHttpRequest.makeRequest(auth, url, accountDataString, null, MakeHttpRequest.POST_METHOD, DEFAULT_USER_AGENT);
+        String response = makeHttpRequest.makeRequest(auth, url, accountDataString, null, MakeHttpRequest.PUT_METHOD, DEFAULT_USER_AGENT);
 
         return Boolean.valueOf(response);
     }
