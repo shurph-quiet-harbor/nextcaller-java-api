@@ -15,15 +15,15 @@ public class GetProfileByIdExample {
 
     private static final Logger logger = LoggerFactory.getLogger(GetProfileByIdExample.class);
 
-    private static final String username = "<api username>";
-    private static final String password = "<api password>";
+    private static final String apiUsername = "<api username>";
+    private static final String apiPassword = "<api password>";
     private static final String profileId = "97d949a413f4ea8b85e9586e1f2d9a";
     private static final String accountId = "test";
 
     public static void main(String[] args) {
         logger.info("Run get by profile id");
 
-        PlatformNextCallerClient client = new PlatformNextCallerClient(username, password);
+        PlatformNextCallerClient client = new PlatformNextCallerClient(apiUsername, apiPassword);
 
         try {
             Map<String, Object> profile = client.getByProfileId(profileId, accountId);

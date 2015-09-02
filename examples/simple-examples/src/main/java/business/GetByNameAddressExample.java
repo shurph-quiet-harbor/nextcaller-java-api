@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GetByNameAddressExample {
-    String username = "{% api_username %}";
-    String password = "{% api_password %}";
+    String apiUsername = "{% api_username %}";
+    String apiPassword = "{% api_password %}";
 
-    NextCallerClient client = new NextCallerClient(username, password);
+    NextCallerClient client = new NextCallerClient(apiUsername, apiPassword);
 
     public void example() throws Exception {
         Map<String, String> nameAddressData = new HashMap<String, String>(){{

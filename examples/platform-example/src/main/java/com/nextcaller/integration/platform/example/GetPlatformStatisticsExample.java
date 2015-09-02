@@ -16,14 +16,14 @@ public class GetPlatformStatisticsExample {
 
     private static final Logger logger = LoggerFactory.getLogger(GetPlatformStatisticsExample.class);
 
-    private static final String username = "<api username>";
-    private static final String password = "<api password>";
+    private static final String apiUsername = "<api username>";
+    private static final String apiPassword = "<api password>";
     private static final int page = 1;
 
     public static void main(String[] args) {
         logger.info("Run get platform statistics");
 
-        PlatformNextCallerClient client = new PlatformNextCallerClient(username, password);
+        PlatformNextCallerClient client = new PlatformNextCallerClient(apiUsername, apiPassword);
 
         try {
             Map<String, Object> response = client.getPlatformStatistics(page);

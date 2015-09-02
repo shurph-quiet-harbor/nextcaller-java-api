@@ -16,14 +16,14 @@ public class GetProfileByPhoneExample {
 
     private static final Logger logger = LoggerFactory.getLogger(GetProfileByPhoneExample.class);
 
-    private static final String username = "<api username>";
-    private static final String password = "<api password>";
+    private static final String apiUsername = "<api username>";
+    private static final String apiPassword = "<api password>";
     private static final String phone = "2125558383";
 
     public static void main(String[] args) {
         logger.info("Run get by phone");
 
-        NextCallerClient client = new NextCallerClient(username, password);
+        NextCallerClient client = new NextCallerClient(apiUsername, apiPassword);
 
         try {
             Map<String, Object> response = client.getByPhone(phone);

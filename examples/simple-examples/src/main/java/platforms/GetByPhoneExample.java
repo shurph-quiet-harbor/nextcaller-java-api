@@ -4,10 +4,10 @@ import com.nextcaller.integration.client.PlatformNextCallerClient;
 import java.util.Map;
 
 public class GetByPhoneExample {
-    String username = "{% api_username %}";
-    String password = "{% api_password %}";
+    String apiUsername = "{% api_username %}";
+    String apiPassword = "{% api_password %}";
 
-    PlatformNextCallerClient client = new PlatformNextCallerClient(username, password);
+    PlatformNextCallerClient client = new PlatformNextCallerClient(apiUsername, apiPassword);
 
     public void example() throws Exception {
         String phone = "2125558383";

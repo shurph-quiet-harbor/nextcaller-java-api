@@ -17,8 +17,8 @@ public class GetProfileByAddressDataExample {
 
     private static final Logger logger = LoggerFactory.getLogger(GetProfileByAddressDataExample.class);
 
-    private static final String username = "<api username>";
-    private static final String password = "<api password>";
+    private static final String apiUsername = "<api username>";
+    private static final String apiPassword = "<api password>";
     private static final Map<String, String> nameAddressData = new HashMap<String, String>(){{
         put("first_name", "Jerry");
         put("last_name", "Seinfeld");
@@ -30,7 +30,7 @@ public class GetProfileByAddressDataExample {
     public static void main(String[] args) {
         logger.info("Run get by address and name");
 
-        PlatformNextCallerClient client = new PlatformNextCallerClient(username, password);
+        PlatformNextCallerClient client = new PlatformNextCallerClient(apiUsername, apiPassword);
 
         try {
             Map<String, Object> response = client.getByNameAddress(nameAddressData, accountId);

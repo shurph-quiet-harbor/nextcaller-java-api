@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 public class QuickStartGuide {
-    String username = "{% api_username %}";
-    String password = "{% api_password %}";
+    String apiUsername = "{% api_username %}";
+    String apiPassword = "{% api_password %}";
     boolean sandbox = true;
 
-    NextCallerClient client = new NextCallerClient(username, password, sandbox);
+    NextCallerClient client = new NextCallerClient(apiUsername, apiPassword, sandbox);
 
     public void example() throws Exception {
         // please, see next two steps

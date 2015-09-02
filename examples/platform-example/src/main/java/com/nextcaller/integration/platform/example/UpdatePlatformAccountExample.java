@@ -16,14 +16,14 @@ public class UpdatePlatformAccountExample {
 
     private static final Logger logger = LoggerFactory.getLogger(UpdatePlatformAccountExample.class);
 
-    private static final String username = "<api username>";
-    private static final String password = "<api password>";
+    private static final String apiUsername = "<api username>";
+    private static final String apiPassword = "<api password>";
     private static final String accountId = "test";
 
     public static void main(String[] args) {
         logger.info("run update platform account");
 
-        PlatformNextCallerClient client = new PlatformNextCallerClient(username, password);
+        PlatformNextCallerClient client = new PlatformNextCallerClient(apiUsername, apiPassword);
 
         try {
             Map<String, Object> data = new HashMap<String, Object>();
