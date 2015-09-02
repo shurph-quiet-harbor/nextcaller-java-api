@@ -17,6 +17,6 @@ public class UpdateAccountExample {
         }};
         String accountId = "test";
 
-        boolean success = client.updatePlatformAccount(accountId, accountData);
+        boolean success = client.updatePlatformAccount(accountData, accountId);
     }
 }

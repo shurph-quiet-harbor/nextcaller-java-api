@@ -287,7 +287,7 @@ public class PlatformNextCallerClientTest extends AbstractClientTest {
 
         mockOkResponse();
 
-        assertTrue(client.updatePlatformAccount(accountId, accountIdJsonRequestExample));
+        assertTrue(client.updatePlatformAccount(accountIdJsonRequestExample, accountId));
     }
 
     @Test
@@ -299,7 +299,7 @@ public class PlatformNextCallerClientTest extends AbstractClientTest {
         mockErrorResponse(statusCode, ACCOUNT_ID_WRONG_RESULT);
 
         try {
-            client.updatePlatformAccount(accountId, accountIdWrongJsonRequestExample);
+            client.updatePlatformAccount(accountIdWrongJsonRequestExample, accountId);
             fail( "method didn't throw when I expected it to" );
         } catch (HttpException e) {
             assertEquals(e.getHttpStatusCode(), statusCode);

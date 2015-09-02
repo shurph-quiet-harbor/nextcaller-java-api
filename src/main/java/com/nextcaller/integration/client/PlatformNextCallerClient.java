@@ -199,12 +199,13 @@ public class PlatformNextCallerClient extends AbstractClient {
 
     /**
      * @param accountData dictionary with changed data
+     * @param accountId identifier of platform account
      * @return true if succeeded update, else false
      * @throws AuthenticationException
      * @throws HttpException
      * @throws IOException
      */
-    public boolean updatePlatformAccount(String accountId, Map<String, Object> accountData)
+    public boolean updatePlatformAccount(Map<String, Object> accountData, String accountId)
             throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
         String url = PrepareUrlUtil.prepareUrlByPlatformAccountId(accountId, sandbox, API_VERSION);
 

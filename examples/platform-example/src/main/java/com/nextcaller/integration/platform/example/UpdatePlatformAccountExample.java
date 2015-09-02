@@ -31,7 +31,7 @@ public class UpdatePlatformAccountExample {
             data.put("last_name", "test");
             data.put("email", "test@test.com");
 
-            client.updatePlatformAccount(accountId, data);
+            client.updatePlatformAccount(data, accountId);
 
             logger.info("Update account success");
         } catch (HttpException e) {
