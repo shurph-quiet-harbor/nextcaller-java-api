@@ -2,10 +2,10 @@ package com.nextcaller.integration.client;
 
 import com.nextcaller.integration.exceptions.AuthenticationException;
 import com.nextcaller.integration.exceptions.HttpException;
-import com.nextcaller.integration.exceptions.ValidateException;
+import com.nextcaller.integration.exceptions.RateLimitException;
+import com.nextcaller.integration.exceptions.ValidationException;
 import com.nextcaller.integration.response.ParseToObject;
 import com.nextcaller.integration.util.PrepareUrlUtil;
-import com.nextcaller.integration.util.ValidateUtil;
 
 import java.io.IOException;
 import java.util.Map;
@@ -22,145 +22,110 @@ public class PlatformNextCallerClient extends AbstractClient {
      *                 Obtain this value from checking the settings page for your application on
      *                 dev.nextcaller.com/profile/api-usage.
      * @param sandbox  Set to true if you want to use the sandbox
-     * @param version  Set API version
-     * @param debug    Set debug output. Default false
      */
-    private PlatformNextCallerClient(
-            final String username, final String password, final boolean sandbox,
-            final String version, final boolean debug) {
-        super(username, password, sandbox, version, debug);
+    public PlatformNextCallerClient(final String username, final String password, final boolean sandbox) {
+        super(username, password, sandbox);
     }
 
-    public static class Builder {
-
-        private String username;
-        private String password;
-        private boolean sandbox;
-        private boolean debug;
-        private String version;
-
-        public Builder(String username, String password) {
-            this.username = username;
-            this.password = password;
-            this.version = DEFAULT_API_VERSION;
-            this.sandbox = DEFAULT_SANDBOX;
-            this.debug = DEFAULT_DEBUG;
-        }
-
-        final public Builder setDebugMode(final boolean debug) {
-            this.debug = debug;
-            return this;
-        }
-
-        final public Builder setDebugMode() {
-            this.debug = true;
-            return this;
-        }
-
-        final public Builder setSandboxMode(final boolean sandbox) {
-            this.sandbox = sandbox;
-            return this;
-        }
-
-        final public Builder setSandboxMode() {
-            this.sandbox = true;
-            return this;
-        }
-
-        final public Builder setVersion(final String version) {
-            this.version = version;
-            return this;
-        }
-
-        final public Builder setVersion(final int version) {
-            this.version = Integer.toString(version);
-            return this;
-        }
-
-        final public Builder setVersion(final double version) {
-            this.version = Double.toString(version);
-            return this;
-        }
-
-        final public PlatformNextCallerClient build() {
-            return new PlatformNextCallerClient(username, password, sandbox, version, debug);
-        }
-
+    /**
+     * @param username The username identifies which application is making the request. Obtain this
+     *                 value from checking the settings page for your application on dev.nextcaller.com/profile/api-usage.
+     * @param password The password identifies which application is making the request.
+     *                 Obtain this value from checking the settings page for your application on
+     *                 dev.nextcaller.com/profile/api-usage.
+     */
+    public PlatformNextCallerClient(final String username, final String password) {
+        super(username, password, DEFAULT_SANDBOX);
     }
 
     /**
      * Get profile by a profile id
      *
-     * @param profileId        Profile identifier
-     * @param platformUsername Platform username
+     * @param profileId profile identifier
+     * @param accountId identifier of platform account
      * @return map user
      * @throws AuthenticationException
      * @throws HttpException
      * @throws IOException
      */
-    public Map<String, Object> getByProfileId(String profileId, String platformUsername)
-            throws AuthenticationException, HttpException, IOException, ValidateException {
-        return super.getByProfileId(profileId, platformUsername);
+    public Map<String, Object> getByProfileId(String profileId, String accountId)
+            throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
+        return super.getByProfileId(profileId, accountId);
     }
 
     /**
      * Get profiles by a phone
      *
-     * @param phone            10 digits phone, str ot int
-     * @param platformUsername Platform username
+     * @param phone            10 digits phone
+     * @param accountId identifier of platform account
      * @return map user
      * @throws AuthenticationException
      * @throws HttpException
      * @throws IOException
      */
-    public Map<String, Object> getByPhone(String phone, String platformUsername)
-            throws AuthenticationException, HttpException, IOException, ValidateException {
-        return super.getByPhone(phone, platformUsername);
+    public Map<String, Object> getByPhone(String phone, String accountId)
+            throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
+        return super.getByPhone(phone, accountId);
+    }
+
+    /**
+     * Get profiles by a email
+     *
+     * @param email     email
+     * @param accountId identifier of platform account
+     * @return map user
+     * @throws AuthenticationException
+     * @throws HttpException
+     * @throws IOException
+     */
+    public Map<String, Object> getByEmail(String email, String accountId)
+            throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
+        return super.getByEmail(email, accountId);
     }
 
     /**
      * Get profiles by a address and name
      *
-     * @param addressData dictionary of address, name data
+     * @param nameAddressData dictionary of address, name data
      * @return map user
      * @throws AuthenticationException
      * @throws HttpException
      * @throws IOException
      */
-    public Map<String, Object> getByAddressName(Map<String, String> addressData, String platformUsername)
-            throws AuthenticationException, HttpException, IOException, ValidateException {
-        return super.getByAddressName(addressData, platformUsername);
+    public Map<String, Object> getByNameAddress(Map<String, String> nameAddressData, String accountId)
+            throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
+        return super.getByNameAddress(nameAddressData, accountId);
     }
 
     /**
      * Get fraud level by a phone
      *
-     * @param phone            10 digits phone, str ot int
-     * @param platformUsername Platform username
+     * @param phone            10 digits phone
+     * @param accountId identifier of platform account
      * @return map user
      * @throws AuthenticationException
      * @throws HttpException
      * @throws IOException
      */
-    public Map<String, Object> getFraudLevel(String phone, String platformUsername)
-            throws AuthenticationException, HttpException, IOException, ValidateException {
-        return super.getFraudLevel(phone, platformUsername);
+    public Map<String, Object> getFraudLevel(String phone, String accountId)
+            throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
+        return super.getFraudLevel(phone, accountId);
     }
 
     /**
      * Update profile by a profile id
      *
-     * @param profileId        Profile identifier
-     * @param newProfile       dictionary with changed data
-     * @param platformUsername Platform username
+     * @param profileId  profile identifier
+     * @param profileData dictionary with changed data
+     * @param accountId  identifier of platform account
      * @return true if succeeded update, else false
      * @throws AuthenticationException
      * @throws HttpException
      * @throws IOException
      */
-    public boolean updateByProfileId(String profileId, Map<String, Object> newProfile, String platformUsername)
-            throws AuthenticationException, HttpException, IOException, ValidateException {
-        return super.updateByProfileId(profileId, newProfile, platformUsername);
+    public boolean updateByProfileId(String profileId, Map<String, Object> profileData, String accountId)
+            throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
+        return super.updateByProfileId(profileId, profileData, accountId);
     }
 
     /**
@@ -171,13 +136,13 @@ public class PlatformNextCallerClient extends AbstractClient {
      * @throws AuthenticationException
      * @throws HttpException
      * @throws IOException
-     * @throws ValidateException
+     * @throws ValidationException
      */
     public Map<String, Object> getPlatformStatistics(int page)
-            throws AuthenticationException, HttpException, IOException, ValidateException {
-        String url = PrepareUrlUtil.prepareUrlByPlatformStatistics(page, sandbox, version);
+            throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
+        String url = PrepareUrlUtil.prepareUrlByPlatformStatistics(page, sandbox, API_VERSION);
 
-        String response = makeHttpRequest.makeRequest(auth, url, null, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT, debug);
+        String response = makeHttpRequest.makeRequest(auth, url, null, null, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT);
 
         return ParseToObject.responseToMap(response);
     }
@@ -189,49 +154,64 @@ public class PlatformNextCallerClient extends AbstractClient {
      * @throws AuthenticationException
      * @throws HttpException
      * @throws IOException
-     * @throws ValidateException
+     * @throws ValidationException
      */
     public Map<String, Object> getPlatformStatistics()
-            throws AuthenticationException, HttpException, IOException, ValidateException {
+            throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
         return getPlatformStatistics(1);
     }
 
     /**
-     * Get platform user
+     * Get platform account
      *
-     * @param platformUsername platform username
+     * @param accountId identifier of platform account
      * @return map user
      * @throws AuthenticationException
      * @throws HttpException
      * @throws IOException
      */
-    public Map<String, Object> getPlatformUser(String platformUsername)
-            throws AuthenticationException, HttpException, IOException, ValidateException {
-        ValidateUtil.validatePlatformUsername(platformUsername);
+    public Map<String, Object> getPlatformAccount(String accountId)
+            throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
+        String url = PrepareUrlUtil.prepareUrlByPlatformAccountId(accountId, sandbox, API_VERSION);
 
-        String url = PrepareUrlUtil.prepareUrlByPlatformUser(platformUsername, sandbox, version);
-
-        String response = makeHttpRequest.makeRequest(auth, url, null, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT, debug);
+        String response = makeHttpRequest.makeRequest(auth, url, null, null, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT);
 
         return ParseToObject.responseToMap(response);
     }
 
     /**
-     * @param newProfile dictionary with changed data
+     * @param accountData dictionary with account's data
      * @return true if succeeded update, else false
      * @throws AuthenticationException
      * @throws HttpException
      * @throws IOException
      */
-    public boolean updatePlatformUser(String platformUsername, Map<String, Object> newProfile)
-            throws AuthenticationException, HttpException, IOException, ValidateException {
-        ValidateUtil.validatePlatformUsername(platformUsername);
+    public boolean createPlatformAccount(Map<String, Object> accountData)
+            throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
+        String url = PrepareUrlUtil.prepareUrlByPlatformAccountId(null, sandbox, API_VERSION);
 
-        String url = PrepareUrlUtil.prepareUrlByPlatformUser(platformUsername, sandbox, version);
+        String accountDataString = ParseToObject.mapToString(accountData);
 
-        String userRequest = ParseToObject.userToString(newProfile);
+        String response = makeHttpRequest.makeRequest(auth, url, accountDataString, null, MakeHttpRequest.POST_METHOD, DEFAULT_USER_AGENT);
 
-        String response = makeHttpRequest.makeRequest(auth, url, userRequest, MakeHttpRequest.POST_METHOD, DEFAULT_USER_AGENT, debug);
+        return Boolean.valueOf(response);
+    }
+
+    /**
+     * @param accountData dictionary with changed data
+     * @param accountId identifier of platform account
+     * @return true if succeeded update, else false
+     * @throws AuthenticationException
+     * @throws HttpException
+     * @throws IOException
+     */
+    public boolean updatePlatformAccount(Map<String, Object> accountData, String accountId)
+            throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
+        String url = PrepareUrlUtil.prepareUrlByPlatformAccountId(accountId, sandbox, API_VERSION);
+
+        String accountDataString = ParseToObject.mapToString(accountData);
+
+        String response = makeHttpRequest.makeRequest(auth, url, accountDataString, null, MakeHttpRequest.PUT_METHOD, DEFAULT_USER_AGENT);
 
         return Boolean.valueOf(response);
     }

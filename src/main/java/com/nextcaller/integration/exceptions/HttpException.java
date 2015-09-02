@@ -1,21 +1,25 @@
 package com.nextcaller.integration.exceptions;
 
 import com.nextcaller.integration.response.ErrorMessage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class HttpException extends Exception {
+public class HttpException extends NcException {
 
     private ErrorMessage errorMessage;
     private int httpStatusCode;
 
+    private static String getExceptionType(int httpStatusCode) {
+        return String.format("%s(%d)", HttpException.class.getSimpleName(), httpStatusCode);
+    }
+
     public HttpException(String message, int httpStatusCode) {
-        super("HttpException(" + httpStatusCode + ") : " + message);
+        super(getExceptionType(httpStatusCode), message);
+
+        this.httpStatusCode = httpStatusCode;
     }
 
     public HttpException(ErrorMessage err, int httpStatusCode) {
-        super("HttpException(" + httpStatusCode + ") : http status code - " + err.getCode() + ", message - "
-                + err.getMessage());
+        super(getExceptionType(httpStatusCode),
+                String.format("error code - %d, message - %s", err.getCode(), err.getMessage()));
 
         this.errorMessage = err;
         this.httpStatusCode = httpStatusCode;

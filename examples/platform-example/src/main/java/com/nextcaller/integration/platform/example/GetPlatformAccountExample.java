@@ -9,28 +9,29 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.lang.String;
 import java.util.Map;
 
-public class GetFraudLevelExample {
+public class GetPlatformAccountExample {
 
-    private static final Logger logger = LoggerFactory.getLogger(GetFraudLevelExample.class);
+    private static final Logger logger = LoggerFactory.getLogger(GetPlatformAccountExample.class);
 
     private static final String apiUsername = "<api username>";
     private static final String apiPassword = "<api password>";
-    private static final String phoneNumber = "2125558383";
     private static final String accountId = "test";
 
     public static void main(String[] args) {
-        logger.info("Run get fraud level");
+        logger.info("run get platform account");
 
         PlatformNextCallerClient client = new PlatformNextCallerClient(apiUsername, apiPassword);
 
         try {
-            Map<String, Object> response = client.getFraudLevel(phoneNumber, accountId);
+            Map<String, Object> account = client.getPlatformAccount(accountId);
 
-            System.out.println("spoofed: " + response.get("spoofed"));
-            System.out.println("fraud_risk: " + response.get("fraud_risk"));
+            System.out.println("first name: " + account.get("first_name"));
+            System.out.println("last name: " + account.get("last_name"));
+            System.out.println("account id: " + account.get("account_id"));
+            System.out.println("email: " + account.get("email"));
+            System.out.println("number of operations: " + account.get("number_of_operations"));
         } catch (HttpException e) {
             logger.error("HttpException: http status code {}. response code {}. response message: {}.",
                     e.getHttpStatusCode(), e.getErrorMessage().getCode(), e.getErrorMessage().getMessage());

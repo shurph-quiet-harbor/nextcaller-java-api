@@ -11,7 +11,7 @@ public class ErrorMessage {
     private String message;
 
     /**
-     * server error code. Description look at https://nextcaller.com/platform/documentation/error-responses/
+     * server error code. Description look at https://nextcaller.com/documentation/v2/#/errors/java
       */
     private int code;
 

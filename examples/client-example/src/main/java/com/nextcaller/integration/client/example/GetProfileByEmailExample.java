@@ -1,6 +1,6 @@
-package com.nextcaller.integration.platform.example;
+package com.nextcaller.integration.client.example;
 
-import com.nextcaller.integration.client.PlatformNextCallerClient;
+import com.nextcaller.integration.client.NextCallerClient;
 import com.nextcaller.integration.exceptions.AuthenticationException;
 import com.nextcaller.integration.exceptions.HttpException;
 import com.nextcaller.integration.exceptions.RateLimitException;
@@ -9,28 +9,28 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.lang.String;
 import java.util.Map;
 
-public class GetFraudLevelExample {
+public class GetProfileByEmailExample {
 
-    private static final Logger logger = LoggerFactory.getLogger(GetFraudLevelExample.class);
+    private static final Logger logger = LoggerFactory.getLogger(GetProfileByIdExample.class);
 
     private static final String apiUsername = "<api username>";
     private static final String apiPassword = "<api password>";
-    private static final String phoneNumber = "2125558383";
-    private static final String accountId = "test";
+    private static final String email = "email@exmaple.com";
 
     public static void main(String[] args) {
-        logger.info("Run get fraud level");
+        logger.info("Run get by profile id");
 
-        PlatformNextCallerClient client = new PlatformNextCallerClient(apiUsername, apiPassword);
+        NextCallerClient client = new NextCallerClient(apiUsername, apiPassword);
 
         try {
-            Map<String, Object> response = client.getFraudLevel(phoneNumber, accountId);
+            Map<String, Object> profile = client.getByEmail(email);
 
-            System.out.println("spoofed: " + response.get("spoofed"));
-            System.out.println("fraud_risk: " + response.get("fraud_risk"));
+            System.out.println("first name: " + profile.get("first_name"));
+            System.out.println("middle name: " + profile.get("middle_name"));
+            System.out.println("last name: " + profile.get("last_name"));
+            System.out.println("email: " + profile.get("email"));
         } catch (HttpException e) {
             logger.error("HttpException: http status code {}. response code {}. response message: {}.",
                     e.getHttpStatusCode(), e.getErrorMessage().getCode(), e.getErrorMessage().getMessage());

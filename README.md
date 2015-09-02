@@ -2,7 +2,7 @@ nextcaller-java-api
 =====================
 
 Java wrapper for the Nextcaller API.
-Supports java v6 and newer
+Supports java v6 and newer.
 
 
 Installation
@@ -11,12 +11,15 @@ Installation
 **Dependencies**:
 
 * jackson-jaxrs
+* logback-classic
+* junit
+* mockito-all
 
 **Installation**:
 
 *cloning from the GitHub repo*:
 
-    $ git clone git://github.com/nextcaller/Nextcaller-java-api.git
+    $ git clone git://github.com/Nextcaller/nextcaller-java-api.git
     $ cd nextcaller-java-api
     $ mvn clean install
 
@@ -26,7 +29,7 @@ Installation
     <dependency>
         <groupId>com.nextcaller.integration-java</groupId>
         <artifactId>integration-java</artifactId>
-        <version>0.0.3</version>
+        <version>0.2</version>
     </dependency>
 
 Documentation

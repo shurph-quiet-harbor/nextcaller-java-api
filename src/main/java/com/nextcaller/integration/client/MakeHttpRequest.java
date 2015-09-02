@@ -3,6 +3,8 @@ package com.nextcaller.integration.client;
 import com.nextcaller.integration.auth.BasicAuth;
 import com.nextcaller.integration.exceptions.AuthenticationException;
 import com.nextcaller.integration.exceptions.HttpException;
+import com.nextcaller.integration.exceptions.RateLimitException;
+import com.nextcaller.integration.exceptions.ValidationException;
 import com.nextcaller.integration.response.ParseToObject;
 import com.nextcaller.integration.response.RestError;
 import org.slf4j.Logger;
@@ -21,8 +23,13 @@ public class MakeHttpRequest {
 
     public static final String GET_METHOD = "GET";
     public static final String POST_METHOD = "POST";
+    public static final String PUT_METHOD = "PUT";
 
     private static final String ERROR_MESSAGE_RESPONSE_OBJECT = "error_message";
+
+    public static final int HTTP_UNPROCESSABLE_ENTITY = 422;
+    public static final int HTTP_TOO_MANY_REQUESTS = 429;
+    public static final int NC_REQUESTS_PER_SECOND_LIMIT_EXCEEDED_ERROR = 1061;
 
     private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
     private static final String USER_AGENT_HEADER_NAME = "User-Agent";
@@ -31,7 +38,8 @@ public class MakeHttpRequest {
     private static final String CONTENT_TYPE_HEADER_NAME = "Content-Type";
     private static final String CONTENT_TYPE_APPLICATION_JSON = "application/json";
     private static final String CONTENT_LENGTH_HEADER_NAME = "Content-Length";
-    
+    private static final String PLATFORM_ACCOUNT_HEADER = "Nc-Account-Id";
+
     private static final int DEFAULT_REQUEST_TIMEOUT = 60000; // 60 second
 
     private static final String MESSAGE_ENCODING = "UTF-8";
@@ -40,19 +48,22 @@ public class MakeHttpRequest {
 
     public static final String JSON_FORMAT = "json";
 
+
     /**
      * @param auth      http header for Basic authentication
      * @param url       to send the request
      * @param data      the data sended by url
+     * @param accountId identifier of platform account
      * @param method    the HTTP method
      * @param userAgent the name of the source of the request
-     * @param debug     boolean (default false)
      * @return response
      * @throws AuthenticationException
      * @throws HttpException
+     * @throws RateLimitException
      */
-    public String makeRequest(BasicAuth auth, String url, String data, String method, String userAgent,
-                              boolean debug) throws AuthenticationException, HttpException {
+    public String makeRequest(BasicAuth auth, String url, String data, String accountId,
+                              String method, String userAgent)
+            throws AuthenticationException, HttpException, ValidationException, RateLimitException {
 
         URL connectionUrl;
         HttpsURLConnection connection = null;
@@ -62,18 +73,10 @@ public class MakeHttpRequest {
         try {
 
             connectionUrl = new URL(url);
-            connection = (HttpsURLConnection) connectionUrl.openConnection();
+            connection = getConnection(connectionUrl);
             connection.setConnectTimeout(DEFAULT_REQUEST_TIMEOUT);
 
-            if (debug) {
-                logger.debug("Request url: " + connectionUrl);
-            }
-
-            addConnectionParams(connection, auth, method, userAgent, data);
-
-            if (method.equals(POST_METHOD) && debug) {
-                logger.debug("Request body: " + data);
-            }
+            addConnectionParams(connection, auth, method, userAgent, data, accountId);
 
             int responseCode = connection.getResponseCode();
 
@@ -95,24 +98,33 @@ public class MakeHttpRequest {
                     err = ParseToObject.getError(response);
                 }
 
-                if (responseCode == HttpsURLConnection.HTTP_UNAUTHORIZED) {
-                    throw new AuthenticationException(err.getError());
-                } else if (err != null) {
-                    throw new HttpException(err.getError(), responseCode);
-                } else {
-                    Object error = ParseToObject.responseToMap(response).get(ERROR_MESSAGE_RESPONSE_OBJECT);
-                    String message = null;
-                    if (error != null) {
-                        message = error.toString();
-                    }
-                    throw new HttpException(message, responseCode);
-                }
+                switch (responseCode) {
+                    case HttpsURLConnection.HTTP_UNAUTHORIZED:
+                        throw new AuthenticationException(err.getError());
 
+                    case HTTP_UNPROCESSABLE_ENTITY:
+                        throw new ValidationException(err.getError());
+
+                    case HTTP_TOO_MANY_REQUESTS:
+                        if (err.getError().getCode() == NC_REQUESTS_PER_SECOND_LIMIT_EXCEEDED_ERROR) {
+                            String message = err.getError().getMessage();
+                            int limit = connection.getHeaderFieldInt("X-Rate-Limit-Limit", -1);
+                            long reset = connection.getHeaderFieldLong("X-Rate-Limit-Reset", -1);
+                            throw new RateLimitException(message, limit, reset);
+                        }
+
+                    default:
+                        if (err != null)
+                            throw new HttpException(err.getError(), responseCode);
+
+                        Object error = ParseToObject.responseToMap(response).get(ERROR_MESSAGE_RESPONSE_OBJECT);
+                        throw new HttpException(error != null ? error.toString() : null, responseCode);
+                }
             } else {
                 response = getStringRequest(connection, false);
             }
 
-            if (method.equals(POST_METHOD) && (responseCode == HttpsURLConnection.HTTP_NO_CONTENT
+            if ((method.equals(POST_METHOD) || method.equals(PUT_METHOD)) && (responseCode == HttpsURLConnection.HTTP_NO_CONTENT
                     || responseCode == HttpsURLConnection.HTTP_OK)) {
                 response = UPDATE_RESPONSE_VALUE;
             }
@@ -127,15 +139,15 @@ public class MakeHttpRequest {
             }
         }
 
-        if (debug) {
-            logger.debug("Response: " + response);
-        }
-
         return response;
     }
 
+    protected HttpsURLConnection getConnection(URL connectionUrl) throws IOException {
+        return (HttpsURLConnection) connectionUrl.openConnection();
+    }
+
     private void addConnectionParams(HttpsURLConnection connection, BasicAuth auth, String method, String userAgent,
-                                     String data) throws IOException {
+                                     String data, String accountId) throws IOException {
 
         if (method != null && !method.isEmpty()) {
             connection.setRequestMethod(method);
@@ -145,6 +157,8 @@ public class MakeHttpRequest {
 
         connection.setRequestProperty(AUTHORIZATION_HEADER_NAME, auth.getHeaders());
         connection.setRequestProperty(CONNECTION_HEADER_NAME, CONNECTION_HEADER_VALUE);
+        if (accountId != null)
+            connection.setRequestProperty(PLATFORM_ACCOUNT_HEADER, accountId);
 
         if (userAgent != null && !userAgent.isEmpty()) {
             connection.setRequestProperty(USER_AGENT_HEADER_NAME, userAgent);

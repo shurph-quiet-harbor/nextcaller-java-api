@@ -3,7 +3,8 @@ package com.nextcaller.integration.platform.example;
 import com.nextcaller.integration.client.PlatformNextCallerClient;
 import com.nextcaller.integration.exceptions.AuthenticationException;
 import com.nextcaller.integration.exceptions.HttpException;
-import com.nextcaller.integration.exceptions.ValidateException;
+import com.nextcaller.integration.exceptions.RateLimitException;
+import com.nextcaller.integration.exceptions.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,19 +15,18 @@ public class GetProfileByIdExample {
 
     private static final Logger logger = LoggerFactory.getLogger(GetProfileByIdExample.class);
 
-    private static final String username = "XXXXX";
-    private static final String password = "XXXXX";
-    private static final String profileId = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
-    private static final String platformUsername = "XXXXX";
+    private static final String apiUsername = "<api username>";
+    private static final String apiPassword = "<api password>";
+    private static final String profileId = "97d949a413f4ea8b85e9586e1f2d9a";
+    private static final String accountId = "test";
 
     public static void main(String[] args) {
         logger.info("Run get by profile id");
 
-        PlatformNextCallerClient.Builder builder = new PlatformNextCallerClient.Builder(username, password);
-        PlatformNextCallerClient client = builder.setDebugMode().setSandboxMode().build();
+        PlatformNextCallerClient client = new PlatformNextCallerClient(apiUsername, apiPassword);
 
         try {
-            Map<String, Object> profile = client.getByProfileId(profileId, platformUsername);
+            Map<String, Object> profile = client.getByProfileId(profileId, accountId);
 
             System.out.println("first name: " + profile.get("first_name"));
             System.out.println("middle name: " + profile.get("middle_name"));
@@ -35,10 +35,12 @@ public class GetProfileByIdExample {
         } catch (HttpException e) {
             logger.error("HttpException: http status code {}. response code {}. response message: {}.",
                     e.getHttpStatusCode(), e.getErrorMessage().getCode(), e.getErrorMessage().getMessage());
-        } catch (ValidateException e) {
-            logger.error("ValidateException: {}", e.getMessage());
+        } catch (ValidationException e) {
+            logger.error("ValidationException: {}", e.getMessage());
         } catch (AuthenticationException e) {
             logger.error("AuthenticationException({}): {}", e.getErrorMessage().getCode(), e.getErrorMessage().getMessage());
+        } catch (RateLimitException e) {
+            logger.error("RateLimitException: rate limit - {}, reset time - {}", e.getRateLimit(), e.getResetTime());
         } catch (IOException e) {
             logger.error("IOException: {}", e.getMessage());
         }
