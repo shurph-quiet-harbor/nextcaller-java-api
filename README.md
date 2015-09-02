@@ -29,7 +29,7 @@ Installation
     <dependency>
         <groupId>com.nextcaller.integration-java</groupId>
         <artifactId>integration-java</artifactId>
-        <version>0.0.4</version>
+        <version>0.2</version>
     </dependency>
 
 Documentation
