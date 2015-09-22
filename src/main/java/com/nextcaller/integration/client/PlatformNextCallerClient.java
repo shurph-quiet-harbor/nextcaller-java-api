@@ -15,6 +15,12 @@ import java.util.Map;
  */
 public class PlatformNextCallerClient extends AbstractClient {
 
+    private static final String DEFAULT_ACCOUNT_ID = "me";
+
+    private String pureId(String accountId) {
+        return accountId != null ? accountId : DEFAULT_ACCOUNT_ID;
+    }
+
     /**
      * @param username The username identifies which application is making the request. Obtain this
      *                 value from checking the settings page for your application on dev.nextcaller.com/profile/api-usage.
@@ -50,7 +56,7 @@ public class PlatformNextCallerClient extends AbstractClient {
      */
     public Map<String, Object> getByProfileId(String profileId, String accountId)
             throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
-        return super.getByProfileId(profileId, accountId);
+        return super.getByProfileId(profileId, pureId(accountId));
     }
 
     /**
@@ -65,7 +71,7 @@ public class PlatformNextCallerClient extends AbstractClient {
      */
     public Map<String, Object> getByPhone(String phone, String accountId)
             throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
-        return super.getByPhone(phone, accountId);
+        return super.getByPhone(phone, pureId(accountId));
     }
 
     /**
@@ -80,7 +86,7 @@ public class PlatformNextCallerClient extends AbstractClient {
      */
     public Map<String, Object> getByEmail(String email, String accountId)
             throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
-        return super.getByEmail(email, accountId);
+        return super.getByEmail(email, pureId(accountId));
     }
 
     /**
@@ -94,7 +100,7 @@ public class PlatformNextCallerClient extends AbstractClient {
      */
     public Map<String, Object> getByNameAddress(Map<String, String> nameAddressData, String accountId)
             throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
-        return super.getByNameAddress(nameAddressData, accountId);
+        return super.getByNameAddress(nameAddressData, pureId(accountId));
     }
 
     /**
@@ -109,7 +115,7 @@ public class PlatformNextCallerClient extends AbstractClient {
      */
     public Map<String, Object> getFraudLevel(String phone, String accountId)
             throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
-        return super.getFraudLevel(phone, accountId);
+        return super.getFraudLevel(phone, pureId(accountId));
     }
 
     /**
@@ -125,7 +131,7 @@ public class PlatformNextCallerClient extends AbstractClient {
      */
     public boolean updateByProfileId(String profileId, Map<String, Object> profileData, String accountId)
             throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
-        return super.updateByProfileId(profileId, profileData, accountId);
+        return super.updateByProfileId(profileId, profileData, pureId(accountId));
     }
 
     /**

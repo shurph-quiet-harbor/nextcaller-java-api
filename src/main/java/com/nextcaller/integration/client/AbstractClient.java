@@ -6,7 +6,6 @@ import com.nextcaller.integration.exceptions.HttpException;
 import com.nextcaller.integration.exceptions.RateLimitException;
 import com.nextcaller.integration.exceptions.ValidationException;
 import com.nextcaller.integration.response.ParseToObject;
-import com.nextcaller.integration.util.CleanUtil;
 import com.nextcaller.integration.util.PrepareUrlUtil;
 import com.nextcaller.integration.util.VersionProvider;
 
@@ -71,9 +70,6 @@ abstract class AbstractClient {
     protected Map<String, Object> getByPhone(String phone, String accountId)
             throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
 
-        phone = phone.replaceAll("[^0-9]", "");
-        phone = CleanUtil.cleanPhone(phone);
-
         String url = PrepareUrlUtil.prepareUrlByPhone(phone, sandbox, API_VERSION);
 
         String response = makeHttpRequest.makeRequest(auth, url, null, accountId, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT);
@@ -133,8 +129,6 @@ abstract class AbstractClient {
      */
     protected Map<String, Object> getFraudLevel(String phone, String accountId)
             throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
-
-        phone = CleanUtil.cleanPhone(phone);
 
         String url = PrepareUrlUtil.prepareUrlByFraudLevel(phone, sandbox, API_VERSION);
 
