@@ -104,21 +104,6 @@ public class PlatformNextCallerClient extends AbstractClient {
     }
 
     /**
-     * Get fraud level by a phone
-     *
-     * @param phone            10 digits phone
-     * @param accountId identifier of platform account
-     * @return map user
-     * @throws AuthenticationException
-     * @throws HttpException
-     * @throws IOException
-     */
-    public Map<String, Object> getFraudLevel(String phone, String accountId)
-            throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
-        return super.getFraudLevel(phone, pureId(accountId));
-    }
-
-    /**
      * Update profile by a profile id
      *
      * @param profileId  profile identifier

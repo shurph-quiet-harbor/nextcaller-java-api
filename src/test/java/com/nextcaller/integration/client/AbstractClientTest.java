@@ -45,8 +45,6 @@ public class AbstractClientTest {
             "    \"last_name\": \"Seinfeld\",\n" +
             "    \"name\": \"Jerry Seinfeld\",\n" +
             "    \"language\": \"English\",\n" +
-            "    \"fraud_threat\": \"low\",\n" +
-            "    \"spoof\": \"false\",\n" +
             "    \"phone\": [\n" +
             "        {\n" +
             "            \"number\": \"2125558383\"\n" +
@@ -89,8 +87,6 @@ public class AbstractClientTest {
             "            \"last_name\": \"Seinfeld\",\n" +
             "            \"name\": \"Jerry Seinfeld\",\n" +
             "            \"language\": \"English\",\n" +
-            "            \"fraud_threat\": \"low\",\n" +
-            "            \"spoof\": \"false\",\n" +
             "            \"phone\": [\n" +
             "                {\n" +
             "                    \"number\": \"2125558383\"\n" +
@@ -190,12 +186,6 @@ public class AbstractClientTest {
             "            ]\n" +
             "        }\n" +
             "    }\n" +
-            "}";
-
-    private final String FRAUD_JSON_RESULT_EXAMPLE =
-            "{\n" +
-            "    \"spoofed\": \"unknown\",\n" +
-            "    \"fraud_risk\": \"medium\"\n" +
             "}";
 
     private final String TOO_MANY_REQUESTS_EXAMPLE =
@@ -391,17 +381,6 @@ public class AbstractClientTest {
             assertEquals(e.getHttpStatusCode(), statusCode);
             assertEquals(((List) e.getErrorMessage().getDescription().get("email")).get(0), "Invalid email address");
         }
-    }
-
-    public void testFraudLevel()
-            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
-        String phone = "2125558383";
-
-        mockResponse(FRAUD_JSON_RESULT_EXAMPLE);
-
-        Map<String, Object> response = getByPhone(phone);
-
-        assertEquals(response.get("spoofed"), "unknown");
     }
 
     public void testRateLimit()

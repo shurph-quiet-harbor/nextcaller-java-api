@@ -218,20 +218,6 @@ public class PlatformNextCallerClientTest extends AbstractClientTest {
     }
 
     @Test
-    public void testFraudLevelWithAccountId()
-            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
-        accountId = "test";
-        super.testFraudLevel();
-    }
-
-    @Test
-    public void testFraudLevelWithoutAccountId()
-            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
-        accountId = "";
-        super.testFraudLevel();
-    }
-
-    @Test
     public void testGetAllStatistics()
             throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         mockResponse(PLATFORM_STATISTICS_JSON_RESULT_EXAMPLE);

@@ -107,18 +107,4 @@ public class NextCallerClient extends AbstractClient {
         return super.updateByProfileId(profileId, profileData, null);
     }
 
-    /**
-     * Get fraud level by a phone
-     *
-     * @param phone 10 digits phone
-     * @return map user
-     * @throws AuthenticationException
-     * @throws HttpException
-     * @throws IOException
-     */
-    public Map<String, Object> getFraudLevel(String phone)
-            throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
-        return getFraudLevel(phone, null);
-    }
-
 }

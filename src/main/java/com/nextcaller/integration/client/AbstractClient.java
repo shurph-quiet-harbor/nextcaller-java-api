@@ -118,26 +118,6 @@ abstract class AbstractClient {
     }
 
     /**
-     * Get fraud level by a phone
-     *
-     * @param phone     10 digits phone string
-     * @param accountId identifier of platform account
-     * @return map user
-     * @throws AuthenticationException
-     * @throws HttpException
-     * @throws IOException
-     */
-    protected Map<String, Object> getFraudLevel(String phone, String accountId)
-            throws AuthenticationException, HttpException, IOException, ValidationException, RateLimitException {
-
-        String url = PrepareUrlUtil.prepareUrlByFraudLevel(phone, sandbox, API_VERSION);
-
-        String response = makeHttpRequest.makeRequest(auth, url, null, accountId, MakeHttpRequest.GET_METHOD, DEFAULT_USER_AGENT);
-
-        return ParseToObject.responseToMap(response);
-    }
-
-    /**
      * Update profile by a profile id
      *
      * @param profileId  profile identifier

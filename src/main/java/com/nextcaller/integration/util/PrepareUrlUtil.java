@@ -49,16 +49,6 @@ public class PrepareUrlUtil {
         return url.toString();
     }
 
-    public static String prepareUrlByFraudLevel(final String phone, boolean sandbox, String version) {
-        StringBuffer url = getBaseUrl(sandbox, version);
-        Map<String, String> params = new HashMap<String, String>() {{
-            put("format", MakeHttpRequest.JSON_FORMAT);
-            put("phone", phone);
-        }};
-        url.append("fraud/").append(mapToFormEncodedString(params));
-        return url.toString();
-    }
-
     public static String prepareUrlByPlatformAccountId(String accountId, boolean sandbox, String version) {
         StringBuffer url = getBaseUrl(sandbox, version);
         Map<String, String> params = new HashMap<String, String>() {{

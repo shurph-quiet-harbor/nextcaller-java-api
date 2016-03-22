@@ -95,10 +95,4 @@ public class NextCallerClientTest extends AbstractClientTest {
             throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
         super.testProfileUpdateWrongRequest();
     }
-
-    @Test
-    public void testFraudLevel()
-            throws HttpException, IOException, AuthenticationException, ValidationException, RateLimitException {
-        super.testFraudLevel();
-    }
 }
