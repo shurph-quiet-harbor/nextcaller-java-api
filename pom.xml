@@ -8,6 +8,68 @@
     <artifactId>integration-java</artifactId>
     <version>0.2</version>
     <packaging>jar</packaging>
+    <name>Next Caller API</name>
+    <description>Java wrapper for the Next Caller API</description>
+    <url>https://github.com/nextcaller/nextcaller-java-api</url>
+
+    <organization>
+        <name>Next Caller, Inc.</name>
+        <url>https://nextcaller.com</url>
+    </organization>
+
+    <issueManagement>
+        <url>https://github.com/nextcaller/nextcaller-java-api/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://github.com/nextcaller/nextcaller-java-api/blob/master/LICENSE</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+	<scm>
+		<url>https://github.com/nextcaller/nextcaller-java-api</url>
+		<connection>scm:git:git://github.com/nextcaller/nextcaller-java-api.git</connection>
+		<developerConnection>scm:git:git@github.com:nextcaller/nextcaller-java-api.git</developerConnection>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>Gianni Martire</name>
+            <email>gianni@nextcaller.com</email>
+			<url>https://github.com/gmartire</url>
+			<id>gmartire</id>
+		</developer>
+        <developer>
+            <name>Ernest Rakhmatulin</name>
+            <email>ernest.rahmatulin@gmail.com</email>
+			<url>https://github.com/rakhmatulin</url>
+			<id>rakhmatulin</id>
+		</developer>
+        <developer>
+			<name>Igor Nemilentsev</name>
+			<email>trezorg@gmail.com</email>
+			<url>https://github.com/trezorg</url>
+			<id>trezorg</id>
+		</developer>
+        <developer>
+			<url>https://github.com/adomorenok</url>
+			<id>adomorenok</id>
+		</developer>
+		<developer>
+			<name>Aliaksei Urbanski</name>
+			<email>aliaksei.urbanski@itechart-group.com</email>
+			<url>https://github.com/Jamim</url>
+			<id>Jamim</id>
+		</developer>
+    </developers>
+
+    <properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -48,7 +110,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
+                <version>3.5.1</version>
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
@@ -57,7 +119,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>2.4</version>
+                <version>3.0.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -70,7 +132,35 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.4</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
                 <configuration>
                     <forkMode>never</forkMode>
                 </configuration>
@@ -78,5 +168,15 @@
         </plugins>
     </build>
 
-</project>
+    <distributionManagement>
+      <snapshotRepository>
+        <id>ossrh</id>
+        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      </snapshotRepository>
+      <repository>
+        <id>ossrh</id>
+        <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+      </repository>
+    </distributionManagement>
 
+</project>
