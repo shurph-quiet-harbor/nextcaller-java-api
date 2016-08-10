@@ -6,7 +6,7 @@
 
     <groupId>com.nextcaller.integration-java</groupId>
     <artifactId>integration-java</artifactId>
-    <version>0.2</version>
+    <version>0.2.1</version>
     <packaging>jar</packaging>
     <name>Next Caller API</name>
     <description>Java wrapper for the Next Caller API</description>
