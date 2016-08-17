@@ -1,7 +1,7 @@
 nextcaller-java-api
 =====================
 
-Java wrapper for the Nextcaller API.
+Java wrapper for the Next Caller API.
 Supports java v6 and newer.
 
 
@@ -17,14 +17,7 @@ Installation
 
 **Installation**:
 
-*cloning from the GitHub repo*:
-
-    $ git clone git://github.com/Nextcaller/nextcaller-java-api.git
-    $ cd nextcaller-java-api
-    $ mvn clean install
-
 *in order to add lib, maven dependency should be added*:
-
 
     <dependency>
         <groupId>com.nextcaller.integration-java</groupId>
